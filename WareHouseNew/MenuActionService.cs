@@ -10,6 +10,11 @@ namespace WareHouseNew
     {
         private List<MenuAction> menuActions; //lista w której są wszystkie opcje menu
 
+        public MenuActionService()
+        {
+            menuActions = new List<MenuAction>();
+        }
+
         public void AddNewAction(int id, string name, string menuName) //metoda odpowiedzialna za dodawanie nowej opcji menu
         {
             MenuAction menuAction = new MenuAction() { Id = id, Name = name, MenuName = menuName }; //utworzenie nowej opcji
