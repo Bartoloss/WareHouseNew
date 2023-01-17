@@ -21,14 +21,16 @@
                 switch(operation.KeyChar)
                 {
                     case '1':
-                        var keyInfo = itemManager.AddNewItemView(actionService); //odbiór informacji na temat wciśniętego przycisku
-                        var addId = itemManager.AddNewItem(keyInfo.KeyChar); //wywołanie metody "AddNewItem" i przekazanie informacji dostarczonej przez użytkownika
+                        var addKeyInfo = itemManager.AddNewItemView(actionService); //odbiór informacji na temat wciśniętego przycisku
+                        var addId = itemManager.AddNewItem(addKeyInfo.KeyChar); //wywołanie metody "AddNewItem" i przekazanie informacji dostarczonej przez użytkownika
                         break;
                     case '2':
                         var removeId = itemManager.RemoveItemView();
                         itemManager.RemoveItem(removeId);
                         break;
                     case '3':
+                        var ListKeyInfo = itemManager.ListOfProductsView(actionService);
+                        itemManager.ListOfProducts(ListKeyInfo.KeyChar);
                         break;
                     case '4':
                         break;
@@ -43,14 +45,20 @@
         private static MenuActionService Initialize(MenuActionService actionService)
         {
             actionService.AddNewAction(1, "Add item", "MainMenu");
-            actionService.AddNewAction(1, "Remove item", "MainMenu");
-            actionService.AddNewAction(1, "Show details", "MainMenu");
-            actionService.AddNewAction(1, "List of Items", "MainMenu");
+            actionService.AddNewAction(2, "Remove item", "MainMenu");
+            actionService.AddNewAction(3, "Show details", "MainMenu");
+            actionService.AddNewAction(4, "List of Items", "MainMenu");
 
             actionService.AddNewAction(1, "Tshirts", "AddNewItemMenu");
-            actionService.AddNewAction(1, "Hoddies", "AddNewItemMenu");
-            actionService.AddNewAction(1, "Gadgets", "AddNewItemMenu");
-            actionService.AddNewAction(1, "Trousers", "AddNewItemMenu");
+            actionService.AddNewAction(2, "Hoddies", "AddNewItemMenu");
+            actionService.AddNewAction(3, "Gadgets", "AddNewItemMenu");
+            actionService.AddNewAction(4, "Trousers", "AddNewItemMenu");
+
+            actionService.AddNewAction(1, "List of Tshirts products", "ListOfProductsMenu");
+            actionService.AddNewAction(2, "List of Hoddies products", "ListOfProductsMenu");
+            actionService.AddNewAction(3, "List of Gadgets products", "ListOfProductsMenu");
+            actionService.AddNewAction(4, "List of Trousers products", "ListOfProductsMenu");
+
             return actionService;  
         }
     }
