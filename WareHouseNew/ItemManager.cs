@@ -14,7 +14,7 @@ namespace WareHouseNew
             Items = new List<Item>();
         }
 
-        public ConsoleKeyInfo AddNewItemView(MenuActionService actionService) //do metody "AddNewItem" przekazuje "actionService" ponieważ w tej metodzie chcę, aby było menu
+        public string AddNewItemView(MenuActionService actionService) //do metody "AddNewItem" przekazuje "actionService" ponieważ w tej metodzie chcę, aby było menu
         {
             Console.WriteLine("\nPlease select the category of added item");
             var addNewItemMenu = actionService.GetMenuActionsByMenuName("AddNewItemMenu"); //do zmiennej "addNewItemMenu" przypisuje opcje menu z kategorii "AddNewItemMenu"
@@ -22,14 +22,14 @@ namespace WareHouseNew
             {
                 Console.WriteLine($"{addNewItemMenu[i].Id}. {addNewItemMenu[i].Name}"); //wyświetl na ekranie Id oraz Name tej opcji.
             }
-            var addOperation = Console.ReadKey();
+            string addOperation = Console.ReadLine();
             return addOperation;
         }
 
-        public int AddNewItem(char itemType) //metoda odpowiedzialna za dodanie nowego produktu
+        public int AddNewItem(string itemType) //metoda odpowiedzialna za dodanie nowego produktu
         {
             int categoryId;
-            Int32.TryParse(itemType.ToString(), out categoryId);
+            Int32.TryParse(itemType, out categoryId);
             Item item = new Item();
             item.CategoryId = categoryId;
             Console.WriteLine("\nPlease enter number of id for new product:");
@@ -49,9 +49,9 @@ namespace WareHouseNew
         public int RemoveItemView()
         {
             Console.WriteLine("\nPlease enter id of product you want to delete:");
-            var userId = Console.ReadKey();
+            string userId = Console.ReadLine();
             int id;
-            Int32.TryParse(userId.KeyChar.ToString(), out id);
+            Int32.TryParse(userId, out id);
             return id;
         }
 
@@ -70,7 +70,7 @@ namespace WareHouseNew
             Console.WriteLine($"\nProduct of id={removeId} was deleted successfully!");
         }
 
-        public ConsoleKeyInfo ListOfProductsView(MenuActionService actionService)
+        public int ListOfProductsView(MenuActionService actionService)
         {
             Console.WriteLine("\nPlease select category of products you want to see:");
             var listOfProductsMenu = actionService.GetMenuActionsByMenuName("ListOfProductsMenu"); //do zmiennej "addNewItemMenu" przypisuje opcje menu z kategorii "AddNewItemMenu"
@@ -78,21 +78,22 @@ namespace WareHouseNew
             {
                 Console.WriteLine($"{listOfProductsMenu[i].Id}. {listOfProductsMenu[i].Name}"); //wyświetl na ekranie Id oraz Name tej opcji.
             }
-            var listOperation = Console.ReadKey();
-            return listOperation;
+            string listOperation = Console.ReadLine();
+            int listOperationInt;
+            Int32.TryParse(listOperation, out listOperationInt);
+            return listOperationInt;
         }
 
-        public void ListOfProducts(char categoryId)
+        public void ListOfProducts(int categoryId)
         {
-            int newCategoryId;
-            Int32.TryParse(categoryId.ToString(), out newCategoryId);
             foreach (var item in Items)
             {
-                if (item.CategoryId == newCategoryId)
+                if (item.CategoryId == categoryId)
                 {
                     Console.WriteLine($"{item.Id}. {item.Name}");
                 }
             }
+            
         }
     }
 

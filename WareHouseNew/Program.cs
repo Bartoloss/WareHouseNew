@@ -5,7 +5,8 @@
         private static void Main(string[] args)
         {
             Console.WriteLine("Welcome to warehouse app!");
-            while(true)
+            ItemManager itemManager = new ItemManager(); //utworzenie nowego obiektu klasy "ItemManager"
+            while (true)
             {
                 Console.WriteLine("Please let me know what you want to do:");
                 MenuActionService actionService = new MenuActionService(); //stworzenie nowego obiektu "actionService" serwisu
@@ -16,23 +17,22 @@
                     Console.WriteLine($"{mainMenu[i].Id}. {mainMenu[i].Name}"); //wyświetl na ekranie Id oraz Name tej opcji.
                 }
 
-                var operation = Console.ReadKey(); //odczyt zmiennej "operation" podanej przez użytkownika
-                ItemManager itemManager = new ItemManager(); //utworzenie nowego obiektu klasy "ItemManager"
-                switch(operation.KeyChar)
+                string operation = Console.ReadLine(); //odczyt zmiennej "operation" podanej przez użytkownika
+                switch(operation)
                 {
-                    case '1':
-                        var addKeyInfo = itemManager.AddNewItemView(actionService); //odbiór informacji na temat wciśniętego przycisku
-                        var addId = itemManager.AddNewItem(addKeyInfo.KeyChar); //wywołanie metody "AddNewItem" i przekazanie informacji dostarczonej przez użytkownika
+                    case "1":
+                        string addKeyInfo = itemManager.AddNewItemView(actionService); //odbiór informacji na temat wciśniętego przycisku
+                        int addId = itemManager.AddNewItem(addKeyInfo); //wywołanie metody "AddNewItem" i przekazanie informacji dostarczonej przez użytkownika
                         break;
-                    case '2':
-                        var removeId = itemManager.RemoveItemView();
+                    case "2":
+                        int removeId = itemManager.RemoveItemView();
                         itemManager.RemoveItem(removeId);
                         break;
-                    case '3':
+                    case "3":
                         var ListKeyInfo = itemManager.ListOfProductsView(actionService);
-                        itemManager.ListOfProducts(ListKeyInfo.KeyChar);
+                        itemManager.ListOfProducts(ListKeyInfo);
                         break;
-                    case '4':
+                    case "4":
                         break;
                     default:
                         Console.WriteLine("Option you have entered does not exist");
@@ -44,10 +44,10 @@
 
         private static MenuActionService Initialize(MenuActionService actionService)
         {
-            actionService.AddNewAction(1, "Add item", "MainMenu");
-            actionService.AddNewAction(2, "Remove item", "MainMenu");
-            actionService.AddNewAction(3, "Show details", "MainMenu");
-            actionService.AddNewAction(4, "List of Items", "MainMenu");
+            actionService.AddNewAction(1, "Add product", "MainMenu");
+            actionService.AddNewAction(2, "Remove product", "MainMenu");
+            actionService.AddNewAction(3, "List of products", "MainMenu");
+            actionService.AddNewAction(4, "Show details of product", "MainMenu");
 
             actionService.AddNewAction(1, "Tshirts", "AddNewItemMenu");
             actionService.AddNewAction(2, "Hoddies", "AddNewItemMenu");
