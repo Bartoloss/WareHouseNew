@@ -84,9 +84,11 @@ namespace WareHouseNew
 
         public void ListOfProducts(char categoryId)
         {
+            int newCategoryId;
+            Int32.TryParse(categoryId.ToString(), out newCategoryId);
             foreach (var item in Items)
             {
-                if (item.CategoryId == categoryId)
+                if (item.CategoryId == newCategoryId)
                 {
                     Console.WriteLine($"{item.Id}. {item.Name}");
                 }
