@@ -108,11 +108,11 @@ namespace WareHouseNew
             else
             {
                 Item productToRemove = new Item(); //zadeklarowanie i stworzenie pustego produktu do usunięcia
-                foreach (var item in Items)
+                foreach (Item product in Items)
                 {
-                    if (item.Id == removeId)
+                    if (product.Id == removeId)
                     {
-                        productToRemove = item; //nadpisanie znalezionego produktu do wcześniej zadeklarowanego pustego produktu do usunięcia
+                        productToRemove = product; //nadpisanie znalezionego produktu do wcześniej zadeklarowanego pustego produktu do usunięcia
                         break;
                     }
                 }
@@ -142,19 +142,19 @@ namespace WareHouseNew
             //UPDATE-(5 tydzień - LINQ) w przypadku braku produktów z danej kategorii wyświetlić komunikat o braku produktów
            
             List<Item> productsToShow = new List<Item>();
-            foreach (var Item in Items)
+            foreach (Item product in Items)
             {
-                if (Item.CategoryId == categoryId)
+                if (product.CategoryId == categoryId)
                 {
-                    productsToShow.Add(Item);
+                    productsToShow.Add(product);
                 }
             }
             if (productsToShow.Count > 0)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
-                foreach (var Item in productsToShow)
+                foreach (Item product in productsToShow)
                 {
-                    Console.WriteLine($"{Item.Id}. {Item.Name}");
+                    Console.WriteLine($"{product.Id}. {product.Name}");
                 }
                 Console.ForegroundColor = ConsoleColor.White;
             }
