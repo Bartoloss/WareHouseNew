@@ -24,56 +24,64 @@ namespace WareHouseNew
             }
             string addOperation = Console.ReadLine();
             int addOperationInt;
-            if (Int32.TryParse(addOperation, out addOperationInt) == true)
             {
-                if(addOperationInt == 1 || addOperationInt == 2 || addOperationInt == 3 || addOperationInt == 4)
+                if (Int32.TryParse(addOperation, out addOperationInt) == true)
                 {
-                    return addOperationInt;
+                    if (addOperationInt == 1 || addOperationInt == 2 || addOperationInt == 3 || addOperationInt == 4)
+                    {
+                        return addOperationInt;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error! Please enter the correct number");
+                        return -1;
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Error! Please enter the correct number");
+                    Console.WriteLine("Error! Please enter the number, not letter or word.");
                     return -1;
                 }
-            }
-            else
-            {
-                Console.WriteLine("Error! Please enter the number, not letter or word.");
-                return -1;
             }
         }
 
         public void AddNewItem(int categoryId) //metoda odpowiedzialna za dodanie nowego produktu
         {
-            Item item = new Item();
-            //int categoryId;
-            int addId;
-            //if (Int32.TryParse(itemType, out categoryId) == true)
+            
+            //foreach (var item in Items)
             //{
-                item.CategoryId = categoryId;
-                Console.WriteLine("Please enter number of id for new product:");
-                string userId = Console.ReadLine();
-                
-                if (Int32.TryParse(userId, out addId) == true)
-                {
-                    item.Id = addId;
-                    Console.WriteLine("Please enter name for new product:");
-                    string userName = Console.ReadLine();
-                    item.Name = userName;
-                    Console.WriteLine($"Product {userName} was added successfully!");
-                    Items.Add(item);
-                }
-                else
-                {
-                    Console.WriteLine("Error! Please enter a number of product id.");
-                    return;
-                }
+            //    if (item.Id == categoryId)
+            //    {
+            //        Console.WriteLine("Error! Id you entered exist. Please enter another id:"); ; //nadpisanie znalezionego produktu do wcześniej zadeklarowanego pustego produktu do usunięcia
+            //        return;
+            //    }
+            //    else
+            //    {
+                    int addId;
+                    Item item = new Item();
+                    item.CategoryId = categoryId;
+                    Console.WriteLine("Please enter number of id for new product:");
+                    string userId = Console.ReadLine();
+
+                    if (Int32.TryParse(userId, out addId) == true)
+                    {
+                        item.Id = addId;
+                        Console.WriteLine("Please enter name for new product:");
+                        string userName = Console.ReadLine();
+                        item.Name = userName;
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"Product {userName} was added successfully!");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Items.Add(item);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error! Please enter a number of product id.");
+                        return;
+                    }
+                //}
             //}
-            //else
-            //{
-            //    Console.WriteLine("Error! Please enter number of product category.");
-            //    return;
-            //}
+            
         }
 
         public int RemoveItemView()
@@ -100,7 +108,9 @@ namespace WareHouseNew
                 }
             }
             Items.Remove(productToRemove); //usunięcie produktu
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"Product of id={removeId} was deleted successfully!");
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         public int ListOfProductsView(MenuActionService actionService)
@@ -119,14 +129,34 @@ namespace WareHouseNew
 
         public void ListOfProducts(int categoryId)
         {
-            foreach (var item in Items)
+            //TODO-(5 tydzień - LINQ) w przypadku braku produktów z danej kategorii wyświetlić komunikat o braku produktów
+            
+            List<Item> productsToShow = new List<Item>();
+            foreach (var Item in Items)
             {
-                if (item.CategoryId == categoryId)
+                if (Item.CategoryId == categoryId)
                 {
-                    Console.WriteLine($"{item.Id}. {item.Name}");
+                    productsToShow.Add(Item);
+                    //Console.WriteLine($"{Item.Id}. {Item.Name}");
                 }
             }
+            if (productsToShow.Count > 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                foreach (var Item in productsToShow)
+                {
+                    Console.WriteLine($"{Item.Id}. {Item.Name}");
+                }
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Sory, there are no products in this category.");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
             
+
         }
     }
 
