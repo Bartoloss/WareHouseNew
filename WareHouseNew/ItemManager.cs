@@ -14,44 +14,77 @@ namespace WareHouseNew
             Items = new List<Item>();
         }
 
-        public string AddNewItemView(MenuActionService actionService) //do metody "AddNewItem" przekazuje "actionService" ponieważ w tej metodzie chcę, aby było menu
+        public int AddNewItemView(MenuActionService actionService) //do metody "AddNewItem" przekazuje "actionService" ponieważ w tej metodzie chcę, aby było menu
         {
-            Console.WriteLine("\nPlease select the category of added item");
+            Console.WriteLine("Please select the category of added item");
             var addNewItemMenu = actionService.GetMenuActionsByMenuName("AddNewItemMenu"); //do zmiennej "addNewItemMenu" przypisuje opcje menu z kategorii "AddNewItemMenu"
             for (int i = 0; i < addNewItemMenu.Count; i++) //dla wszystkich znalezionych opcji z kategorii AddNewItemMenu
             {
                 Console.WriteLine($"{addNewItemMenu[i].Id}. {addNewItemMenu[i].Name}"); //wyświetl na ekranie Id oraz Name tej opcji.
             }
             string addOperation = Console.ReadLine();
-            return addOperation;
+            int addOperationInt;
+            if (Int32.TryParse(addOperation, out addOperationInt) == true)
+            {
+                if(addOperationInt == 1 || addOperationInt == 2 || addOperationInt == 3 || addOperationInt == 4)
+                {
+                    return addOperationInt;
+                }
+                else
+                {
+                    Console.WriteLine("Error! Please enter the correct number");
+                    return -1;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Error! Please enter the number, not letter or word.");
+                return -1;
+            }
         }
 
-        public int AddNewItem(string itemType) //metoda odpowiedzialna za dodanie nowego produktu
+        public void AddNewItem(int categoryId) //metoda odpowiedzialna za dodanie nowego produktu
         {
-            int categoryId;
-            Int32.TryParse(itemType, out categoryId);
             Item item = new Item();
-            item.CategoryId = categoryId;
-            Console.WriteLine("\nPlease enter number of id for new product:");
-            var userId = Console.ReadKey();
+            //int categoryId;
             int addId;
-            Int32.TryParse(userId.ToString(), out addId);
-            item.Id = addId;
-            Console.WriteLine("\nPlease enter name for new product:");
-            var userName = Console.ReadLine();
-            item.Name = userName;
-            Console.WriteLine($"Product {userName} was added successfully!");
-
-            Items.Add(item);
-            return addId; 
+            //if (Int32.TryParse(itemType, out categoryId) == true)
+            //{
+                item.CategoryId = categoryId;
+                Console.WriteLine("Please enter number of id for new product:");
+                string userId = Console.ReadLine();
+                
+                if (Int32.TryParse(userId, out addId) == true)
+                {
+                    item.Id = addId;
+                    Console.WriteLine("Please enter name for new product:");
+                    string userName = Console.ReadLine();
+                    item.Name = userName;
+                    Console.WriteLine($"Product {userName} was added successfully!");
+                    Items.Add(item);
+                }
+                else
+                {
+                    Console.WriteLine("Error! Please enter a number of product id.");
+                    return;
+                }
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Error! Please enter number of product category.");
+            //    return;
+            //}
         }
 
         public int RemoveItemView()
         {
-            Console.WriteLine("\nPlease enter id of product you want to delete:");
+            Console.WriteLine("Please enter id of product you want to delete:");
             string userId = Console.ReadLine();
             int id;
-            Int32.TryParse(userId, out id);
+            if(Int32.TryParse(userId, out id)==true)
+            {
+
+            }
             return id;
         }
 
@@ -67,12 +100,12 @@ namespace WareHouseNew
                 }
             }
             Items.Remove(productToRemove); //usunięcie produktu
-            Console.WriteLine($"\nProduct of id={removeId} was deleted successfully!");
+            Console.WriteLine($"Product of id={removeId} was deleted successfully!");
         }
 
         public int ListOfProductsView(MenuActionService actionService)
         {
-            Console.WriteLine("\nPlease select category of products you want to see:");
+            Console.WriteLine("Please select category of products you want to see:");
             var listOfProductsMenu = actionService.GetMenuActionsByMenuName("ListOfProductsMenu"); //do zmiennej "addNewItemMenu" przypisuje opcje menu z kategorii "AddNewItemMenu"
             for (int i = 0; i < listOfProductsMenu.Count; i++) //dla wszystkich znalezionych opcji z kategorii AddNewItemMenu
             {
