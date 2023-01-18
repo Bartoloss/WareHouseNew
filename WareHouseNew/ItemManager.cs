@@ -91,26 +91,36 @@ namespace WareHouseNew
             int id;
             if(Int32.TryParse(userId, out id)==true)
             {
-
+                return id;
             }
-            return id;
+            else
+            {
+                return -1;
+            }
         }
 
         public void RemoveItem(int removeId) //metoda odpowiedzialna za usunięcie produktu
         {
-            Item productToRemove = new Item(); //zadeklarowanie i stworzenie pustego produktu do usunięcia
-            foreach(var item in Items)
+            if (removeId < 0)
             {
-                if (item.Id == removeId)
-                {
-                    productToRemove = item; //nadpisanie znalezionego produktu do wcześniej zadeklarowanego pustego produktu do usunięcia
-                    break;
-                }
+                RemoveItemView();
             }
-            Items.Remove(productToRemove); //usunięcie produktu
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"Product of id={removeId} was deleted successfully!");
-            Console.ForegroundColor = ConsoleColor.White;
+            else
+            {
+                Item productToRemove = new Item(); //zadeklarowanie i stworzenie pustego produktu do usunięcia
+                foreach (var item in Items)
+                {
+                    if (item.Id == removeId)
+                    {
+                        productToRemove = item; //nadpisanie znalezionego produktu do wcześniej zadeklarowanego pustego produktu do usunięcia
+                        break;
+                    }
+                }
+                Items.Remove(productToRemove); //usunięcie produktu
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Product of id={removeId} was deleted successfully!");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
         }
 
         public int ListOfProductsView(MenuActionService actionService)
@@ -129,15 +139,14 @@ namespace WareHouseNew
 
         public void ListOfProducts(int categoryId)
         {
-            //TODO-(5 tydzień - LINQ) w przypadku braku produktów z danej kategorii wyświetlić komunikat o braku produktów
-            
+            //UPDATE-(5 tydzień - LINQ) w przypadku braku produktów z danej kategorii wyświetlić komunikat o braku produktów
+           
             List<Item> productsToShow = new List<Item>();
             foreach (var Item in Items)
             {
                 if (Item.CategoryId == categoryId)
                 {
                     productsToShow.Add(Item);
-                    //Console.WriteLine($"{Item.Id}. {Item.Name}");
                 }
             }
             if (productsToShow.Count > 0)
