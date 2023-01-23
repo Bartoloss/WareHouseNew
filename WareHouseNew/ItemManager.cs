@@ -47,42 +47,59 @@ namespace WareHouseNew
 
         public void AddNewItem(int categoryId) //metoda odpowiedzialna za dodanie nowego produktu
         {
-            
-            //foreach (var item in Items)
-            //{
-            //    if (item.Id == categoryId)
-            //    {
-            //        Console.WriteLine("Error! Id you entered exist. Please enter another id:"); ; //nadpisanie znalezionego produktu do wcześniej zadeklarowanego pustego produktu do usunięcia
-            //        return;
-            //    }
-            //    else
-            //    {
-                    int addId;
-                    Item item = new Item();
-                    item.CategoryId = categoryId;
-                    Console.WriteLine("Please enter number of id for new product:");
-                    string userId = Console.ReadLine();
+            int retrieveId;
+            Item item = new Item();
+            item.CategoryId = categoryId;
+            GetLastId(categoryId);
+            Console.WriteLine($"The id for new product is {lastId}:");
+            string userId = Console.ReadLine();
 
-                    if (Int32.TryParse(userId, out addId) == true)
-                    {
-                        item.Id = addId;
-                        Console.WriteLine("Please enter name for new product:");
-                        string userName = Console.ReadLine();
-                        item.Name = userName;
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine($"Product {userName} was added successfully!");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Items.Add(item);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error! Please enter a number of product id.");
-                        return;
-                    }
-                //}
-            //}
             
-        }
+                item.Id = addId;
+                Console.WriteLine("Please enter name for new product:");
+                string userName = Console.ReadLine();
+                item.Name = userName;
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"Product {userName} was added successfully!");
+                Console.ForegroundColor = ConsoleColor.White;
+                Items.Add(item);
+            
+
+
+            ////foreach (var item in Items)
+            ////{
+            ////    if (item.Id == categoryId)
+            ////    {
+            ////        Console.WriteLine("Error! Id you entered exist. Please enter another id:"); ; //nadpisanie znalezionego produktu do wcześniej zadeklarowanego pustego produktu do usunięcia
+            ////        return;
+            ////    }
+            ////    else
+            ////    {
+            //int addId;
+            //Item item = new Item();
+            //item.CategoryId = categoryId;
+            //Console.WriteLine("Please enter number of id for new product:");
+            //string userId = Console.ReadLine();
+
+            //if (Int32.TryParse(userId, out addId) == true)
+            //{
+            //    item.Id = addId;
+            //    Console.WriteLine("Please enter name for new product:");
+            //    string userName = Console.ReadLine();
+            //    item.Name = userName;
+            //    Console.ForegroundColor = ConsoleColor.Green;
+            //    Console.WriteLine($"Product {userName} was added successfully!");
+            //    Console.ForegroundColor = ConsoleColor.White;
+            //    Items.Add(item);
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Error! Please enter a number of product id.");
+            //    return;
+            //}
+            //    //}
+            ////}
+        } 
 
         public int RemoveItemView()
         {
@@ -166,6 +183,28 @@ namespace WareHouseNew
             }
             
 
+        }
+
+        public int GetLastId(int categoryId)
+        {
+            List<Item> CategoryItem = new List<Item>();
+            foreach (Item product in Items)
+            {
+                if (product.CategoryId == categoryId)
+                {
+                    CategoryItem.Add(product);
+                }
+            }
+            int lastId;
+            if (Items.Any())
+            {
+                lastId = Items.OrderBy(p => p.Id).LastOrDefault().Id;
+            }
+            else
+            {
+                lastId = 0;
+            }
+            return lastId;
         }
     }
 
