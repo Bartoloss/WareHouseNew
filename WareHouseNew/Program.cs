@@ -6,6 +6,7 @@
         {
             Console.WriteLine("Welcome to warehouse app!");
             ItemManager itemManager = new ItemManager(); //utworzenie nowego obiektu klasy "ItemManager"
+            ItemService itemService = new ItemService();
             while (true)
             {
                 Console.WriteLine("Please let me know what you want to do:");
@@ -22,15 +23,15 @@
                 {
                     case "1":
                         int addKeyInfo = itemManager.AddNewItemView(actionService); //odbiór informacji na temat wciśniętego przycisku
-                        itemManager.AddNewItem(addKeyInfo); //wywołanie metody "AddNewItem" i przekazanie informacji dostarczonej przez użytkownika
+                        itemService.AddNewItem(addKeyInfo); //wywołanie metody "AddNewItem" i przekazanie informacji dostarczonej przez użytkownika
                         break;
                     case "2":
                         int removeId = itemManager.RemoveItemView();
-                        itemManager.RemoveItem(removeId);
+                        itemService.RemoveItem(removeId);
                         break;
                     case "3":
                         int ListKeyInfo = itemManager.ListOfProductsView(actionService);
-                        itemManager.ListOfProducts(ListKeyInfo);
+                        itemService.ListOfProducts(ListKeyInfo);
                         break;
                     case "4":
                         break;
@@ -58,6 +59,7 @@
             actionService.AddNewAction(2, "List of Hoddies products", "ListOfProductsMenu");
             actionService.AddNewAction(3, "List of Gadgets products", "ListOfProductsMenu");
             actionService.AddNewAction(4, "List of Trousers products", "ListOfProductsMenu");
+            actionService.AddNewAction(5, "List of all products", "ListOfProductsMenu");
 
             return actionService;  
         }
