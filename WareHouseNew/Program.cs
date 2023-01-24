@@ -22,12 +22,10 @@
                 switch(operation)
                 {
                     case "1":
-                        int addKeyInfo = itemManager.AddNewItemView(actionService); //odbiór informacji na temat wciśniętego przycisku
-                        itemService.AddNewItem(addKeyInfo); //wywołanie metody "AddNewItem" i przekazanie informacji dostarczonej przez użytkownika
+                        int addKeyInfo = itemManager.AddNewItem(actionService); //odbiór informacji na temat wciśniętego przycisku
                         break;
                     case "2":
-                        int removeId = itemManager.RemoveItemView();
-                        itemService.RemoveItem(removeId);
+                        itemManager.RemoveExistItem();
                         break;
                     case "3":
                         int ListKeyInfo = itemManager.ListOfProductsView(actionService);

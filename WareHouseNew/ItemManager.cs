@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace WareHouseNew
 {
-    public class ItemManager
+    public class ItemManager : ItemService
     {
-        public int AddNewItemView(MenuActionService actionService) //do metody "AddNewItem" przekazuje "actionService" ponieważ w tej metodzie chcę, aby było menu
+        
+        public int AddNewItem(MenuActionService actionService) //do metody "AddNewItem" przekazuje "actionService" ponieważ w tej metodzie chcę, aby było menu
         {
             Console.WriteLine("Please select the category of added item");
             var addNewItemMenu = actionService.GetMenuActionsByMenuName("AddNewItemMenu"); //do zmiennej "addNewItemMenu" przypisuje opcje menu z kategorii "AddNewItemMenu"
@@ -23,7 +24,18 @@ namespace WareHouseNew
                 {
                     if (addOperationInt == 1 || addOperationInt == 2 || addOperationInt == 3 || addOperationInt == 4)
                     {
-                        return addOperationInt;
+                        ItemService itemService = new ItemService();
+                        Item item = new Item();
+                        item.CategoryId = addOperationInt;
+                        Console.WriteLine("Please enter name for new product:");
+                        string userName = Console.ReadLine();
+                        item.Name = userName;
+                        itemService.AddItem(item);
+                        int newId = item.Id;
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"Product {item.Name} was added successfully with number of id={newId}.");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        return 1;
                     }
                     else
                     {
@@ -39,18 +51,47 @@ namespace WareHouseNew
             }
         }
 
-        public int RemoveItemView()
+        
+
+        public void RemoveExistItem()
         {
+            ItemService itemService = new ItemService();
             Console.WriteLine("Please enter id of product you want to delete:");
             string userId = Console.ReadLine();
-            int id;
-            if(Int32.TryParse(userId, out id)==true)
+            int removeId;
+            if (Int32.TryParse(userId, out removeId) == true)
             {
-                return id;
+                if (removeId < 0)
+                {
+                    RemoveExistItem();
+                }
+                else
+                {
+                    Item productToRemove = new Item(); //zadeklarowanie i stworzenie pustego produktu do usunięcia
+                    foreach (Item item in Items)
+                    {
+                        if (item.Id == removeId)
+                        {
+                            productToRemove = item; //nadpisanie znalezionego produktu do wcześniej zadeklarowanego pustego produktu do usunięcia
+                            itemService.RemoveItem(productToRemove); //wysłanie produktu do metody RemoveItem, gdzie nastąpi usunięcie
+                            
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine($"Product of id={removeId} was deleted successfully!");
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Product of id you entered does not exist. Please write again:");
+
+                        }
+                    }
+                    
+                }
+                
             }
             else
             {
-                return -1;
+                Console.WriteLine("Please enter a number!"); 
             }
         }
 
