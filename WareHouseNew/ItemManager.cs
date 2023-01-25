@@ -58,7 +58,6 @@ namespace WareHouseNew
             }
         }
 
-
         public void RemoveExistItem()
         {
             Console.WriteLine("Please enter id of product you want to delete:");
