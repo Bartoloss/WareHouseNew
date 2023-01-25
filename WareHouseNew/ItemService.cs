@@ -14,6 +14,18 @@ namespace WareHouseNew
             Items = new List<Item>();
         }
 
+        public Item? GetItemById(int id)
+        {
+            foreach (Item Item in Items)
+            {
+                if (Item.Id == id)
+                {
+                    return Item;
+                }
+            }
+            return null;
+        }
+
         private int GetLastId()
         {
             return (Items.Any()) ? Items.OrderBy(p => p.Id).LastOrDefault().Id : 0;

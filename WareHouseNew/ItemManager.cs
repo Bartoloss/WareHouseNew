@@ -70,30 +70,22 @@ namespace WareHouseNew
                 {
                     RemoveExistItem();
                 }
-                else
+                else if (removeId > 0) 
                 {
-
                     Item productToRemove = new Item(); //zadeklarowanie i stworzenie pustego produktu do usunięcia
-                    foreach (Item item in _itemService.Items)
-                    {
-                        if (item.Id == removeId)
-                        {
-                            productToRemove = item; //nadpisanie znalezionego produktu do wcześniej zadeklarowanego pustego produktu do usunięcia
-                            _itemService.RemoveItem(productToRemove); //wysłanie produktu do metody RemoveItem, gdzie nastąpi usunięcie
-                            
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine($"Product of id={removeId} was deleted successfully!");
-                            Console.ForegroundColor = ConsoleColor.White;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Product of id you entered does not exist. Please write again:");
+                    _itemService.GetItemById(removeId); //wysłanie id produktu do metody, która zwróci produkt do usunięcia
+                    Item Item = productToRemove;
+                    _itemService.RemoveItem(productToRemove);
 
-                        }
-                    }
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"Product of id={removeId} was deleted successfully!");
+                    Console.ForegroundColor = ConsoleColor.White;
                     
+
                 }
-                
+
+                //Console.WriteLine("Product of id you entered does not exist. Please write again:");
+
             }
             else
             {
