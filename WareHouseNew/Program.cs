@@ -5,7 +5,9 @@
         private static void Main(string[] args)
         {
             Console.WriteLine("Welcome to warehouse app!");
-            ItemManager itemManager = new ItemManager(); //utworzenie nowego obiektu klasy "ItemManager"
+            ItemService itemService = new ItemService();
+            MenuActionService menuActionService = new MenuActionService();
+            ItemManager itemManager = new ItemManager(itemService, menuActionService); //utworzenie nowego obiektu klasy "ItemManager"
             
             while (true)
             {

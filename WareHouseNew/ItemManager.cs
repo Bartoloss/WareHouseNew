@@ -59,7 +59,6 @@ namespace WareHouseNew
         }
 
         
-
         public void RemoveExistItem()
         {
             Console.WriteLine("Please enter id of product you want to delete:");
@@ -73,8 +72,9 @@ namespace WareHouseNew
                 }
                 else
                 {
+
                     Item productToRemove = new Item(); //zadeklarowanie i stworzenie pustego produktu do usunięcia
-                    foreach (Item item in Items)
+                    foreach (Item item in _itemService.Items)
                     {
                         if (item.Id == removeId)
                         {
