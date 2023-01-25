@@ -24,13 +24,12 @@ namespace WareHouseNew
                 {
                     if (addOperationInt == 1 || addOperationInt == 2 || addOperationInt == 3 || addOperationInt == 4)
                     {
-                        ItemService itemService = new ItemService();
                         Item item = new Item();
                         item.CategoryId = addOperationInt;
                         Console.WriteLine("Please enter name for new product:");
                         string userName = Console.ReadLine();
                         item.Name = userName;
-                        itemService.AddItem(item);
+                        AddItem(item);
                         int newId = item.Id;
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"Product {item.Name} was added successfully with number of id={newId}.");
@@ -55,7 +54,6 @@ namespace WareHouseNew
 
         public void RemoveExistItem()
         {
-            ItemService itemService = new ItemService();
             Console.WriteLine("Please enter id of product you want to delete:");
             string userId = Console.ReadLine();
             int removeId;
@@ -73,7 +71,7 @@ namespace WareHouseNew
                         if (item.Id == removeId)
                         {
                             productToRemove = item; //nadpisanie znalezionego produktu do wcześniej zadeklarowanego pustego produktu do usunięcia
-                            itemService.RemoveItem(productToRemove); //wysłanie produktu do metody RemoveItem, gdzie nastąpi usunięcie
+                            RemoveItem(productToRemove); //wysłanie produktu do metody RemoveItem, gdzie nastąpi usunięcie
                             
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine($"Product of id={removeId} was deleted successfully!");
