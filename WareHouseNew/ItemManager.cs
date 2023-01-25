@@ -58,7 +58,7 @@ namespace WareHouseNew
             }
         }
 
-        
+
         public void RemoveExistItem()
         {
             Console.WriteLine("Please enter id of product you want to delete:");
@@ -72,19 +72,20 @@ namespace WareHouseNew
                 }
                 else if (removeId > 0) 
                 {
-                    Item productToRemove = new Item(); //zadeklarowanie i stworzenie pustego produktu do usunięcia
-                    _itemService.GetItemById(removeId); //wysłanie id produktu do metody, która zwróci produkt do usunięcia
-                    Item Item = productToRemove;
-                    _itemService.RemoveItem(productToRemove);
-
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"Product of id={removeId} was deleted successfully!");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    
+                    Item? productToRemove = _itemService.GetItemById(removeId); 
+                    if (productToRemove == null)
+                    {
+                        Console.WriteLine("Product of id you entered does not exist.");
+                    }
+                    else
+                    {
+                        _itemService.RemoveItem(productToRemove);
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"Product of id={removeId} was deleted successfully!");
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
 
                 }
-
-                //Console.WriteLine("Product of id you entered does not exist. Please write again:");
 
             }
             else

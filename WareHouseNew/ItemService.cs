@@ -14,7 +14,7 @@ namespace WareHouseNew
             Items = new List<Item>();
         }
 
-        public Item? GetItemById(int id)
+        public Item? GetItemById(int id) //pytajnik daje się, żeby można było zwrócić nulla, tam gdzie zadeklarowano że będzie zwrócony obiekt
         {
             foreach (Item Item in Items)
             {
