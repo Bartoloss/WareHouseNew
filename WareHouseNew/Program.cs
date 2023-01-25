@@ -6,7 +6,7 @@
         {
             Console.WriteLine("Welcome to warehouse app!");
             ItemManager itemManager = new ItemManager(); //utworzenie nowego obiektu klasy "ItemManager"
-            ItemService itemService = new ItemService();
+            
             while (true)
             {
                 Console.WriteLine("Please let me know what you want to do:");
@@ -29,7 +29,7 @@
                         break;
                     case "3":
                         int ListKeyInfo = itemManager.ListOfProductsView(actionService);
-                        itemService.ListOfProducts(ListKeyInfo);
+                        //itemService.ListOfProducts(ListKeyInfo);
                         break;
                     case "4":
                         break;

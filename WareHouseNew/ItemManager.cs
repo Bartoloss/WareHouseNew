@@ -6,9 +6,17 @@ using System.Threading.Tasks;
 
 namespace WareHouseNew
 {
-    public class ItemManager : ItemService
+    public class ItemManager
     {
-        
+        public ItemService _itemService;
+        public MenuActionService _menuActionService;
+
+        public ItemManager(ItemService itemService, MenuActionService menuActionService)
+        {
+            _itemService = itemService;
+            _menuActionService = menuActionService; //wstrzyknięcie do managera dwóch serwisów: menuActionServis oraz ItemService
+        }
+
         public int AddNewItem(MenuActionService actionService) //do metody "AddNewItem" przekazuje "actionService" ponieważ w tej metodzie chcę, aby było menu
         {
             Console.WriteLine("Please select the category of added item");
@@ -29,7 +37,7 @@ namespace WareHouseNew
                         Console.WriteLine("Please enter name for new product:");
                         string userName = Console.ReadLine();
                         item.Name = userName;
-                        AddItem(item);
+                        _itemService.AddItem(item);
                         int newId = item.Id;
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"Product {item.Name} was added successfully with number of id={newId}.");
@@ -71,7 +79,7 @@ namespace WareHouseNew
                         if (item.Id == removeId)
                         {
                             productToRemove = item; //nadpisanie znalezionego produktu do wcześniej zadeklarowanego pustego produktu do usunięcia
-                            RemoveItem(productToRemove); //wysłanie produktu do metody RemoveItem, gdzie nastąpi usunięcie
+                            _itemService.RemoveItem(productToRemove); //wysłanie produktu do metody RemoveItem, gdzie nastąpi usunięcie
                             
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine($"Product of id={removeId} was deleted successfully!");
