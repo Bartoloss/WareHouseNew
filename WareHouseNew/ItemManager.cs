@@ -109,7 +109,7 @@ namespace WareHouseNew
             List<Item> returnedProducts = new List<Item>();
             returnedProducts = _itemService.GetItemsByCategory(operation);
 
-            if (returnedProducts == null)
+            if (returnedProducts.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("There are no products in category you selected.");

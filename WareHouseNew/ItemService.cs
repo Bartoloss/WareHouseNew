@@ -43,21 +43,13 @@ namespace WareHouseNew
             Items.Remove(item);
         }
 
-        public Item? GetAllItems()
-        {
-            foreach (Item Item in Items)
-            {
-                return Item;
-            }
-            return null;
-        }
-
+        
         public List<Item>? GetItemsByCategory(int operation)
         {
             List<Item> productsToShow = new List<Item>();
             if (operation == 5)
             {
-                GetAllItems();
+                return Items;
             }
             else
             {
@@ -68,16 +60,8 @@ namespace WareHouseNew
                         productsToShow.Add(Item);
                     }
                 }
-                if (productsToShow == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    return productsToShow;
-                }
+                return productsToShow; 
             }
-            return null;   
         }
 
        
