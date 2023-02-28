@@ -42,43 +42,49 @@ namespace WareHouseNew
         {
             Items.Remove(item);
         }
-        
-        public void ListOfProducts(int categoryId)
-        {
-            //UPDATE-(5 tydzień - LINQ) w przypadku braku produktów z danej kategorii wyświetlić komunikat o braku produktów
 
-            List<Item> productsToShow = new List<Item>();
-            foreach (Item product in Items)
+        public Item? GetAllItems()
+        {
+            foreach (Item Item in Items)
             {
-                if (product.CategoryId == categoryId)
-                {
-                    productsToShow.Add(product);
-                }
-                else if (categoryId == 5)
-                {
-                    productsToShow.Add(product);
-                }
+                return Item;
             }
-            if (productsToShow.Count > 0)
+            return null;
+        }
+
+        public List<Item>? GetItemsByCategory(int operation)
+        {
+            List<Item> productsToShow = new List<Item>();
+            if (operation == 5)
             {
-                Console.ForegroundColor = ConsoleColor.Blue;
-                foreach (Item product in productsToShow)
-                {
-                    Console.WriteLine($"{product.Id}. {product.Name}");
-                }
-                Console.ForegroundColor = ConsoleColor.White;
+                GetAllItems();
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Sory, there are no products in this category.");
-                Console.ForegroundColor = ConsoleColor.White;
+                foreach (Item Item in Items)
+                {
+                    if (Item.CategoryId == operation)
+                    {
+                        productsToShow.Add(Item);
+                    }
+                }
+                if (productsToShow == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return productsToShow;
+                }
             }
+            return null;   
         }
 
        
+        
 
+        }
     }
 
     
-}
+

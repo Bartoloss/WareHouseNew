@@ -14,7 +14,7 @@ namespace WareHouseNew
         public ItemManager(ItemService itemService, MenuActionService menuActionService)
         {
             _itemService = itemService;
-            _menuActionService = menuActionService; //wstrzyknięcie do managera dwóch serwisów: menuActionServis oraz ItemService
+            _menuActionService = menuActionService; //wstrzyknięcie do managera dwóch serwisów: menuActionService oraz ItemService
         }
 
         public int AddNewItem(MenuActionService actionService) //do metody "AddNewItem" przekazuje "actionService" ponieważ w tej metodzie chcę, aby było menu
@@ -69,12 +69,14 @@ namespace WareHouseNew
                 {
                     RemoveExistItem();
                 }
-                else if (removeId > 0) 
+                else if (removeId > 0)
                 {
-                    Item? productToRemove = _itemService.GetItemById(removeId); 
+                    Item? productToRemove = _itemService.GetItemById(removeId);
                     if (productToRemove == null)
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Product of id you entered does not exist.");
+                        Console.ForegroundColor = ConsoleColor.White;
                     }
                     else
                     {
@@ -83,19 +85,16 @@ namespace WareHouseNew
                         Console.WriteLine($"Product of id={removeId} was deleted successfully!");
                         Console.ForegroundColor = ConsoleColor.White;
                     }
-
                 }
-
             }
             else
             {
-                Console.WriteLine("Please enter a number!"); 
+                Console.WriteLine("Please enter a number!");
             }
         }
 
-        
 
-        public int ListOfProductsView(MenuActionService actionService)
+        public void ListOfProductsView(MenuActionService actionService)
         {
             Console.WriteLine("Please select category of products you want to see:");
             var listOfProductsMenu = actionService.GetMenuActionsByMenuName("ListOfProductsMenu"); //do zmiennej "addNewItemMenu" przypisuje opcje menu z kategorii "AddNewItemMenu"
@@ -103,11 +102,33 @@ namespace WareHouseNew
             {
                 Console.WriteLine($"{listOfProductsMenu[i].Id}. {listOfProductsMenu[i].Name}"); //wyświetl na ekranie Id oraz Name tej opcji.
             }
-            string listOperation = Console.ReadLine();
-            int listOperationInt;
-            Int32.TryParse(listOperation, out listOperationInt);
-            return listOperationInt;
+            string operationString = Console.ReadLine();
+            int operation;
+            Int32.TryParse(operationString, out operation);
+            
+            List<Item> returnedProducts = new List<Item>();
+            returnedProducts = _itemService.GetItemsByCategory(operation);
+
+            if (returnedProducts == null)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("There are no products in category you selected.");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            else
+            {
+                foreach (Item item in returnedProducts)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine($"{item.Id}. {item.Name}");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+            }  
+
         }
+
+        
+        
 
         
     }

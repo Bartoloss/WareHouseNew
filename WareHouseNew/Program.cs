@@ -30,7 +30,7 @@
                         itemManager.RemoveExistItem();
                         break;
                     case "3":
-                        int ListKeyInfo = itemManager.ListOfProductsView(actionService);
+                        itemManager.ListOfProductsView(actionService);
                         //itemService.ListOfProducts(ListKeyInfo);
                         break;
                     case "4":
