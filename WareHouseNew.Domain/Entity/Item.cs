@@ -11,7 +11,18 @@ namespace WareHouseNew.Domain.Entity
     {
         public int CategoryId { get; set; }
         public string Name { get; set; }
-        protected bool isLowInWareHouse;
+        public int Amount { get; set; }
 
+        private bool isLowInWareHouse;
+        
+        public bool ChangeAmount(int amount)
+        {
+            Amount = amount;
+            if (amount > 10)
+            {
+                isLowInWareHouse = true;
+            }
+            return isLowInWareHouse;
+        }
     }
 }

@@ -35,5 +35,9 @@ namespace WareHouseNew.App.Common
             Items.Remove(item);
         }
 
+        public List<T> GetAllItems()
+        {
+            return Items;
+        }
     }
 }

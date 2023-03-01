@@ -13,5 +13,6 @@ namespace WareHouseNew.App.Abstract
         int GetLastId();
         int AddItem(T item);
         void RemoveItem(T item);
+        List<T> GetAllItems(); 
     }
 }

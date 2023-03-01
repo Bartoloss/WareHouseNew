@@ -26,7 +26,7 @@ namespace WareHouseNew
                 switch(operation)
                 {
                     case "1":
-                        int addKeyInfo = itemManager.AddNewItem(menuActionService); //odbiór informacji na temat wciśniętego przycisku
+                        itemManager.AddNewItem(menuActionService);
                         break;
                     case "2":
                         itemManager.RemoveExistItem();
@@ -35,6 +35,7 @@ namespace WareHouseNew
                         itemManager.ListOfProductsView(menuActionService);
                         break;
                     case "4":
+                        itemManager.ShowDetails();
                         break;
                     default:
                         Console.WriteLine("Option you have entered does not exist");

@@ -9,6 +9,7 @@ namespace WareHouseNew.Domain.Entity
 {
     public class MenuAction : BaseEntity
     {
+        public int id { get; set; }
         public string Name { get; set; }
         public string MenuName { get; set; }
 

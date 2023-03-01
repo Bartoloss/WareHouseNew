@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using WareHouseNew.App.Concrete;
@@ -39,6 +40,11 @@ namespace WareHouseNew
                         Console.WriteLine("Please enter name for new product:");
                         string userName = Console.ReadLine();
                         item.Name = userName;
+                        Console.WriteLine("Please enter amount of new product:");
+                        string userAmount = Console.ReadLine();
+                        int amount;
+                        Int32.TryParse(userAmount, out amount);
+                        item.Amount = amount;
                         _itemService.AddItem(item);
                         int newId = item.Id;
                         Console.ForegroundColor = ConsoleColor.Green;
@@ -125,10 +131,34 @@ namespace WareHouseNew
                     Console.WriteLine($"{item.Id}. {item.Name}");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-            }  
-
+            } 
         }
 
+        public void ShowDetails()
+        {
+            List<Item> allItems = new List<Item>(); 
+            allItems = _itemService.GetAllItems();
+            Console.WriteLine("Please select ID of the product whose details you want to see: ");
+            foreach (Item item in allItems)
+            {
+                Console.WriteLine($"{item.Id}. {item.Name}.");
+            }
+            string choiceString = Console.ReadLine();
+            int choice;
+            Int32.TryParse(choiceString, out choice);
+            foreach (Item item in allItems)
+            {
+                if (choice == item.Id)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine($"Product details with ID={choice}:");
+                    Console.WriteLine($"Name: {item.Name}");
+                    Console.WriteLine($"Amount: {item.Amount} pcs");
+                    Console.WriteLine($"Large stock: {item.ChangeAmount(item.Amount)}");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+            }
+        }
         
         
 
