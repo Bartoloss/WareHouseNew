@@ -45,6 +45,7 @@ namespace WareHouseNew
                         int amount;
                         Int32.TryParse(userAmount, out amount);
                         item.Amount = amount;
+                        item.CreatedDate = DateTime.Now;
                         _itemService.AddItem(item);
                         int newId = item.Id;
                         Console.ForegroundColor = ConsoleColor.Green;
@@ -155,6 +156,7 @@ namespace WareHouseNew
                     Console.WriteLine($"Name: {item.Name}");
                     Console.WriteLine($"Amount: {item.Amount} pcs");
                     Console.WriteLine($"Large stock: {item.ChangeAmount(item.Amount)}");
+                    Console.WriteLine($"Created Date: {item.CreatedDate}");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
             }
