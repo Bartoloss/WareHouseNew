@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WareHouseNew.App.Concrete;
+using WareHouseNew.Domain.Entity;
 
 namespace WareHouseNew
 {

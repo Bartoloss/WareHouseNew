@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WareHouseNew.App.Common;
+using WareHouseNew.Domain.Entity;
 
-namespace WareHouseNew
+namespace WareHouseNew.App.Concrete
 {
-    public class ItemService
+    public class ItemService : BaseService<Item>
     {
-        public List<Item> Items { get; set; }
-        public ItemService()
-        {
-            Items = new List<Item>();
-        }
 
         public Item? GetItemById(int id) //pytajnik daje się, żeby można było zwrócić nulla, tam gdzie zadeklarowano że będzie zwrócony obiekt
         {
@@ -26,24 +23,6 @@ namespace WareHouseNew
             return null;
         }
 
-        private int GetLastId()
-        {
-            return (Items.Any()) ? Items.OrderBy(p => p.Id).LastOrDefault().Id : 0;
-        }
-
-        public int AddItem(Item item) //metoda odpowiedzialna za dodanie nowego produktu
-        {
-            item.Id = GetLastId() + 1;
-            Items.Add(item);
-            return item.Id;
-        }
-
-        public void RemoveItem(Item item)
-        {
-            Items.Remove(item);
-        }
-
-        
         public List<Item>? GetItemsByCategory(int operation)
         {
             List<Item> productsToShow = new List<Item>();
@@ -60,15 +39,16 @@ namespace WareHouseNew
                         productsToShow.Add(Item);
                     }
                 }
-                return productsToShow; 
+                return productsToShow;
             }
         }
 
-       
-        
 
-        }
+
+
     }
+}
+
 
     
 

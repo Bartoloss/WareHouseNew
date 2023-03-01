@@ -4,13 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WareHouseNew
+namespace WareHouseNew.Domain.Common
 {
-    public class Item
+    public class BaseEntity : AuditableModel
     {
         public int Id { get; set; }
-        public int CategoryId { get; set; }
-        public string Name { get; set; }
-        
     }
 }
