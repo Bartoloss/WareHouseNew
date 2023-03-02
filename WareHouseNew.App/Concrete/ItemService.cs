@@ -44,8 +44,6 @@ namespace WareHouseNew.App.Concrete
         }
 
 
-
-
     }
 }
 

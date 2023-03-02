@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using WareHouseNew.App.Concrete;
+using WareHouseNew.App.Helpers;
 using WareHouseNew.Domain.Entity;
 
-namespace WareHouseNew
+namespace WareHouseNew.App.Managers
 {
     public class ItemManager
     {
@@ -135,6 +137,7 @@ namespace WareHouseNew
             } 
         }
 
+
         public void ShowDetails()
         {
             List<Item> allItems = new List<Item>(); 
@@ -157,6 +160,7 @@ namespace WareHouseNew
                     Console.WriteLine($"Amount: {item.Amount} pcs");
                     Console.WriteLine($"Large stock: {item.ChangeAmount(item.Amount)}");
                     Console.WriteLine($"Created Date: {item.CreatedDate}");
+                    Console.WriteLine($"Created by user ID: {User.ID}");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
             }

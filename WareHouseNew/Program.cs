@@ -1,6 +1,8 @@
 ﻿using WareHouseNew.App.Abstract;
 using WareHouseNew.App.Concrete;
+using WareHouseNew.App.Helpers;
 using WareHouseNew.Domain.Entity;
+using WareHouseNew.App.Managers;
 
 namespace WareHouseNew
 {
@@ -12,7 +14,12 @@ namespace WareHouseNew
             MenuActionService menuActionService = new MenuActionService(); //stworzenie nowego obiektu "menuActionService" serwisu
             ItemService itemService = new ItemService();    
             ItemManager itemManager = new ItemManager(itemService, menuActionService); //utworzenie nowego obiektu klasy "ItemManager"
-            
+            Console.WriteLine("Please enter your ID user:");
+            string userName = Console.ReadLine();
+            Int32.TryParse(userName, out int userNameInt);
+            Console.WriteLine("Thank you! Hello user of ID="+userNameInt);
+            User.ID = userNameInt;
+
             while (true)
             {
                 Console.WriteLine("Please let me know what you want to do:");
