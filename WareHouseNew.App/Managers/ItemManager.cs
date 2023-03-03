@@ -28,10 +28,10 @@ namespace WareHouseNew.App.Managers
         public void AddNewItem()
         {
             Console.WriteLine("Please select the category of added item");
-            var addNewItemMenu = _menuActionService.GetMenuActionsByMenuName("AddNewItemMenu"); //do zmiennej "addNewItemMenu" przypisuje opcje menu z kategorii "AddNewItemMenu"
+            var addNewItemMenu = _categoriesService.GetAllItems(); //do zmiennej "addNewItemMenu" przypisuje opcje menu z kategorii "AddNewItemMenu"
             for (int i = 0; i < addNewItemMenu.Count; i++) //dla wszystkich znalezionych opcji z kategorii AddNewItemMenu
             {
-                Console.WriteLine($"{addNewItemMenu[i].Id}. {addNewItemMenu[i].Name}"); //wyświetl na ekranie Id oraz Name tej opcji.
+                Console.WriteLine($"{addNewItemMenu[i].Id}. {addNewItemMenu[i].CategoryName}"); //wyświetl na ekranie Id oraz Name tej opcji.
             }
             string addOperation = Console.ReadLine();
             int addOperationInt;
