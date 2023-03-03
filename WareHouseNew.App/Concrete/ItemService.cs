@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WareHouseNew.App.Common;
+using WareHouseNew.App.Helpers;
 using WareHouseNew.Domain.Entity;
 
 namespace WareHouseNew.App.Concrete
@@ -11,11 +12,11 @@ namespace WareHouseNew.App.Concrete
     public class ItemService : BaseService<Item>
     {
 
-        public Item? GetItemById(int id) //pytajnik daje się, żeby można było zwrócić nulla, tam gdzie zadeklarowano że będzie zwrócony obiekt
+        public Item? GetItemById(int userId) //pytajnik daje się, żeby można było zwrócić nulla, tam gdzie zadeklarowano że będzie zwrócony obiekt
         {
             foreach (Item Item in Items)
             {
-                if (Item.Id == id)
+                if (Item.Id == userId)
                 {
                     return Item;
                 }
@@ -23,10 +24,10 @@ namespace WareHouseNew.App.Concrete
             return null;
         }
 
-        public List<Item>? GetItemsByCategory(int operation)
+        public List<Item>? GetItemsByCategory(int userCategory)
         {
             List<Item> productsToShow = new List<Item>();
-            if (operation == 5)
+            if (userCategory == 0)
             {
                 return Items;
             }
@@ -34,7 +35,7 @@ namespace WareHouseNew.App.Concrete
             {
                 foreach (Item Item in Items)
                 {
-                    if (Item.CategoryId == operation)
+                    if (Item.CategoryId == userCategory)
                     {
                         productsToShow.Add(Item);
                     }
@@ -43,7 +44,7 @@ namespace WareHouseNew.App.Concrete
             }
         }
 
-
+          
     }
 }
 

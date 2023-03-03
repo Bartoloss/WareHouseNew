@@ -12,13 +12,21 @@ namespace WareHouseNew
         {
             Console.WriteLine("Welcome to warehouse app!");
             MenuActionService menuActionService = new MenuActionService(); //stworzenie nowego obiektu "menuActionService" serwisu
-            ItemService itemService = new ItemService();    
-            ItemManager itemManager = new ItemManager(itemService, menuActionService); //utworzenie nowego obiektu klasy "ItemManager"
+            ItemService itemService = new ItemService();
+            CategoriesService categoriesService = new CategoriesService();
+            ItemManager itemManager = new ItemManager(itemService, menuActionService, categoriesService); //utworzenie nowego obiektu klasy "ItemManager"
             Console.WriteLine("Please enter your ID user:");
             string userName = Console.ReadLine();
             Int32.TryParse(userName, out int userNameInt);
             Console.WriteLine("Thank you! Hello user of ID="+userNameInt);
             User.ID = userNameInt;
+
+            Console.WriteLine("How many categories do you want to enter?:");
+            string userAmountOfCategories = Console.ReadLine();
+            Int32.TryParse(userAmountOfCategories, out int amountOfCategories);
+            itemManager.AddCategories(amountOfCategories);
+
+            
 
             while (true)
             {
@@ -33,13 +41,13 @@ namespace WareHouseNew
                 switch(operation)
                 {
                     case "1":
-                        itemManager.AddNewItem(menuActionService);
+                        itemManager.AddNewItem();
                         break;
                     case "2":
                         itemManager.RemoveExistItem();
                         break;
                     case "3":
-                        itemManager.ListOfProductsView(menuActionService);
+                        itemManager.ListOfProductsView();
                         break;
                     case "4":
                         itemManager.ShowDetails();

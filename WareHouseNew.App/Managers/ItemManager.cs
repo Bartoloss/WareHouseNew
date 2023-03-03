@@ -15,17 +15,20 @@ namespace WareHouseNew.App.Managers
     {
         public ItemService _itemService;
         public MenuActionService _menuActionService;
+        public CategoriesService _categoriesService;
 
-        public ItemManager(ItemService itemService, MenuActionService menuActionService)
+        public ItemManager(ItemService itemService, MenuActionService menuActionService, CategoriesService categoriesService)
         {
             _itemService = itemService;
             _menuActionService = menuActionService; //wstrzyknięcie do managera dwóch serwisów: menuActionService oraz ItemService
+            _categoriesService = categoriesService;
         }
 
-        public int AddNewItem(MenuActionService actionService) //do metody "AddNewItem" przekazuje "actionService" ponieważ w tej metodzie chcę, aby było menu
+        //METODY ZWIĄZANE Z PRODUKTAMI
+        public void AddNewItem()
         {
             Console.WriteLine("Please select the category of added item");
-            var addNewItemMenu = actionService.GetMenuActionsByMenuName("AddNewItemMenu"); //do zmiennej "addNewItemMenu" przypisuje opcje menu z kategorii "AddNewItemMenu"
+            var addNewItemMenu = _menuActionService.GetMenuActionsByMenuName("AddNewItemMenu"); //do zmiennej "addNewItemMenu" przypisuje opcje menu z kategorii "AddNewItemMenu"
             for (int i = 0; i < addNewItemMenu.Count; i++) //dla wszystkich znalezionych opcji z kategorii AddNewItemMenu
             {
                 Console.WriteLine($"{addNewItemMenu[i].Id}. {addNewItemMenu[i].Name}"); //wyświetl na ekranie Id oraz Name tej opcji.
@@ -33,38 +36,34 @@ namespace WareHouseNew.App.Managers
             string addOperation = Console.ReadLine();
             int addOperationInt;
             {
-                if (Int32.TryParse(addOperation, out addOperationInt) == true)
+                if (Int32.TryParse(addOperation, out addOperationInt))
                 {
-                    if (addOperationInt == 1 || addOperationInt == 2 || addOperationInt == 3 || addOperationInt == 4)
+                    switch (addOperationInt)
                     {
-                        Item item = new Item();
-                        item.CategoryId = addOperationInt;
-                        Console.WriteLine("Please enter name for new product:");
-                        string userName = Console.ReadLine();
-                        item.Name = userName;
-                        Console.WriteLine("Please enter amount of new product:");
-                        string userAmount = Console.ReadLine();
-                        int amount;
-                        Int32.TryParse(userAmount, out amount);
-                        item.Amount = amount;
-                        item.CreatedDate = DateTime.Now;
-                        _itemService.AddItem(item);
-                        int newId = item.Id;
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine($"Product {item.Name} was added successfully with number of id={newId}.");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        return 1;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error! Please enter the correct number");
-                        return -1;
+                        case >1:
+                        case <4:
+                            Item product = new Item();
+                            product.CategoryId = addOperationInt;
+                            Console.WriteLine("Please enter name for new product:");
+                            string userName = Console.ReadLine();
+                            product.Name = userName;
+                            Console.WriteLine("Please enter amount of new product:");
+                            string userAmount = Console.ReadLine();
+                            int amount;
+                            Int32.TryParse(userAmount, out amount);
+                            product.Amount = amount;
+                            product.CreatedDate = DateTime.Now;
+                            _itemService.AddItem(product);
+                            int newId = product.Id;
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine($"Product {product.Name} was added successfully with number of id={newId}.");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            break;
                     }
                 }
                 else
                 {
                     Console.WriteLine("Error! Please enter the number, not letter or word.");
-                    return -1;
                 }
             }
         }
@@ -92,7 +91,7 @@ namespace WareHouseNew.App.Managers
                     else
                     {
                         _itemService.RemoveItem(productToRemove);
-                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"Product of id={removeId} was deleted successfully!");
                         Console.ForegroundColor = ConsoleColor.White;
                     }
@@ -105,20 +104,19 @@ namespace WareHouseNew.App.Managers
         }
 
 
-        public void ListOfProductsView(MenuActionService actionService)
+        public void ListOfProductsView()
         {
             Console.WriteLine("Please select category of products you want to see:");
-            var listOfProductsMenu = actionService.GetMenuActionsByMenuName("ListOfProductsMenu"); //do zmiennej "addNewItemMenu" przypisuje opcje menu z kategorii "AddNewItemMenu"
+            var listOfProductsMenu = _menuActionService.GetMenuActionsByMenuName("ListOfProductsMenu");
             for (int i = 0; i < listOfProductsMenu.Count; i++) //dla wszystkich znalezionych opcji z kategorii AddNewItemMenu
             {
                 Console.WriteLine($"{listOfProductsMenu[i].Id}. {listOfProductsMenu[i].Name}"); //wyświetl na ekranie Id oraz Name tej opcji.
             }
-            string operationString = Console.ReadLine();
-            int operation;
-            Int32.TryParse(operationString, out operation);
+            string userChoiceString = Console.ReadLine();
+            int userChoice;
+            Int32.TryParse(userChoiceString, out userChoice);
             
-            List<Item> returnedProducts = new List<Item>();
-            returnedProducts = _itemService.GetItemsByCategory(operation);
+            List<Item> returnedProducts = _itemService.GetItemsByCategory(userChoice);
 
             if (returnedProducts.Count == 0)
             {
@@ -137,38 +135,55 @@ namespace WareHouseNew.App.Managers
             } 
         }
 
-
+       
         public void ShowDetails()
         {
-            List<Item> allItems = new List<Item>(); 
-            allItems = _itemService.GetAllItems();
+            List<Item> allItems = _itemService.GetAllItems();
             Console.WriteLine("Please select ID of the product whose details you want to see: ");
             foreach (Item item in allItems)
             {
                 Console.WriteLine($"{item.Id}. {item.Name}.");
             }
-            string choiceString = Console.ReadLine();
-            int choice;
-            Int32.TryParse(choiceString, out choice);
-            foreach (Item item in allItems)
+            string userChoiceString = Console.ReadLine();
+            int userChoice;
+            Int32.TryParse(userChoiceString, out userChoice);
+            Item productToDisplay = _itemService.GetItemById(userChoice);
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine($"Product details with ID={productToDisplay.Id}:");
+            Console.WriteLine($"Name: {productToDisplay.Name}");
+            Console.WriteLine($"Amount: {productToDisplay.Amount} pcs");
+            Console.WriteLine($"Large stock: {productToDisplay.ChangeAmount(productToDisplay.Amount)}");
+            Console.WriteLine($"Created Date: {productToDisplay.CreatedDate}");
+            Console.WriteLine($"Created by user ID: {User.ID}");
+            Console.ForegroundColor = ConsoleColor.White;
+
+        }
+
+
+        //METODY ZWIĄZANE Z KATEGORIAMI
+
+        public void AddCategories(int amountOfCategories)
+        {
+            for (int i = 1; i <= amountOfCategories; i++)
             {
-                if (choice == item.Id)
-                {
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.WriteLine($"Product details with ID={choice}:");
-                    Console.WriteLine($"Name: {item.Name}");
-                    Console.WriteLine($"Amount: {item.Amount} pcs");
-                    Console.WriteLine($"Large stock: {item.ChangeAmount(item.Amount)}");
-                    Console.WriteLine($"Created Date: {item.CreatedDate}");
-                    Console.WriteLine($"Created by user ID: {User.ID}");
-                    Console.ForegroundColor = ConsoleColor.White;
-                }
+                Categories category = new Categories();
+                category.Id = i;
+                Console.WriteLine($"Please enter name of {i} category:");
+                string userNameCategory = Console.ReadLine();
+                category.CategoryName = userNameCategory;
+                _categoriesService.AddItem(category);
             }
         }
-        
-        
 
-        
+        public void ViewListOfCategories()
+        {
+            List<Categories> allCategories = _categoriesService.GetAllItems();
+            foreach (Categories category in allCategories)
+            {
+                Console.WriteLine($"List of {category.CategoryName} products.");
+            }
+            
+        }
     }
 
     

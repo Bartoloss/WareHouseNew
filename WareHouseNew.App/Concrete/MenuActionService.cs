@@ -40,11 +40,12 @@ namespace WareHouseNew.App.Concrete
             AddItem(new MenuAction(3, "Gadgets", "AddNewItemMenu"));
             AddItem(new MenuAction(4, "Trousers", "AddNewItemMenu"));
 
+
+            AddItem(new MenuAction(0, "List of all products", "ListOfProductsMenu"));
             AddItem(new MenuAction(1, "List of Tshirts products", "ListOfProductsMenu"));
             AddItem(new MenuAction(2, "List of Hoddies products", "ListOfProductsMenu"));
             AddItem(new MenuAction(3, "List of Gadgets products", "ListOfProductsMenu"));
             AddItem(new MenuAction(4, "List of Trousers products", "ListOfProductsMenu"));
-            AddItem(new MenuAction(5, "List of all products", "ListOfProductsMenu"));
 
         }
     }
