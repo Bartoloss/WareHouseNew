@@ -14,7 +14,8 @@ namespace WareHouseNew
             MenuActionService menuActionService = new MenuActionService(); //stworzenie nowego obiektu "menuActionService" serwisu
             ItemService itemService = new ItemService();
             CategoriesService categoriesService = new CategoriesService();
-            ItemManager itemManager = new ItemManager(itemService, menuActionService, categoriesService); //utworzenie nowego obiektu klasy "ItemManager"
+            ItemManager itemManager = new ItemManager(itemService, menuActionService); //utworzenie nowego obiektu klasy "ItemManager"
+            CategoriesManager categoriesManager = new CategoriesManager(categoriesService);
             Console.WriteLine("Please enter your ID user:");
             string userName = Console.ReadLine();
             Int32.TryParse(userName, out int userNameInt);
@@ -24,10 +25,9 @@ namespace WareHouseNew
             Console.WriteLine("How many categories do you want to enter?:");
             string userAmountOfCategories = Console.ReadLine();
             Int32.TryParse(userAmountOfCategories, out int amountOfCategories);
-            itemManager.AddCategories(amountOfCategories);
+            categoriesManager.AddCategories(amountOfCategories);
 
             
-
             while (true)
             {
                 Console.WriteLine("Please let me know what you want to do:");

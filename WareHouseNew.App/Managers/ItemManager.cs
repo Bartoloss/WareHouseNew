@@ -17,22 +17,25 @@ namespace WareHouseNew.App.Managers
         public MenuActionService _menuActionService;
         public CategoriesService _categoriesService;
 
-        public ItemManager(ItemService itemService, MenuActionService menuActionService, CategoriesService categoriesService)
+        public ItemManager(ItemService itemService, MenuActionService menuActionService)
         {
             _itemService = itemService;
             _menuActionService = menuActionService; //wstrzyknięcie do managera dwóch serwisów: menuActionService oraz ItemService
-            _categoriesService = categoriesService;
         }
 
-        //METODY ZWIĄZANE Z PRODUKTAMI
+
         public void AddNewItem()
         {
             Console.WriteLine("Please select the category of added item");
-            var addNewItemMenu = _categoriesService.GetAllItems(); //do zmiennej "addNewItemMenu" przypisuje opcje menu z kategorii "AddNewItemMenu"
-            for (int i = 0; i < addNewItemMenu.Count; i++) //dla wszystkich znalezionych opcji z kategorii AddNewItemMenu
+            var categories = _categoriesService.GetAllItems();
+            if (categories.Any())
             {
-                Console.WriteLine($"{addNewItemMenu[i].Id}. {addNewItemMenu[i].CategoryName}"); //wyświetl na ekranie Id oraz Name tej opcji.
+                foreach (var category in categories)
+                {
+                    Console.WriteLine($"{category.Id}.{category.CategoryName}");
+                }
             }
+            //var addNewItemMenu = _menuActionService.GetMenuActionsByMenuName("AddNewItemMenu"); //do zmiennej "addNewItemMenu" przypisuje opcje menu z kategorii "AddNewItemMenu"
             string addOperation = Console.ReadLine();
             int addOperationInt;
             {
@@ -40,8 +43,8 @@ namespace WareHouseNew.App.Managers
                 {
                     switch (addOperationInt)
                     {
-                        case >1:
-                        case <4:
+                        case > 1:
+                        case < 4:
                             Item product = new Item();
                             product.CategoryId = addOperationInt;
                             Console.WriteLine("Please enter name for new product:");
@@ -115,7 +118,7 @@ namespace WareHouseNew.App.Managers
             string userChoiceString = Console.ReadLine();
             int userChoice;
             Int32.TryParse(userChoiceString, out userChoice);
-            
+
             List<Item> returnedProducts = _itemService.GetItemsByCategory(userChoice);
 
             if (returnedProducts.Count == 0)
@@ -132,10 +135,10 @@ namespace WareHouseNew.App.Managers
                     Console.WriteLine($"{item.Id}. {item.Name}");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-            } 
+            }
         }
 
-       
+
         public void ShowDetails()
         {
             List<Item> allItems = _itemService.GetAllItems();
@@ -159,31 +162,6 @@ namespace WareHouseNew.App.Managers
 
         }
 
-
-        //METODY ZWIĄZANE Z KATEGORIAMI
-
-        public void AddCategories(int amountOfCategories)
-        {
-            for (int i = 1; i <= amountOfCategories; i++)
-            {
-                Categories category = new Categories();
-                category.Id = i;
-                Console.WriteLine($"Please enter name of {i} category:");
-                string userNameCategory = Console.ReadLine();
-                category.CategoryName = userNameCategory;
-                _categoriesService.AddItem(category);
-            }
-        }
-
-        public void ViewListOfCategories()
-        {
-            List<Categories> allCategories = _categoriesService.GetAllItems();
-            foreach (Categories category in allCategories)
-            {
-                Console.WriteLine($"List of {category.CategoryName} products.");
-            }
-            
-        }
     }
 
     

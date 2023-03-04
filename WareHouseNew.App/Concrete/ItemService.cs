@@ -14,7 +14,7 @@ namespace WareHouseNew.App.Concrete
 
         public Item? GetItemById(int userId) //pytajnik daje się, żeby można było zwrócić nulla, tam gdzie zadeklarowano że będzie zwrócony obiekt
         {
-            foreach (Item Item in Items)
+            foreach (Item Item in ObjList)
             {
                 if (Item.Id == userId)
                 {
@@ -29,11 +29,11 @@ namespace WareHouseNew.App.Concrete
             List<Item> productsToShow = new List<Item>();
             if (userCategory == 0)
             {
-                return Items;
+                return ObjList;
             }
             else
             {
-                foreach (Item Item in Items)
+                foreach (Item Item in ObjList)
                 {
                     if (Item.CategoryId == userCategory)
                     {

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WareHouseNew.App.Common;
 using WareHouseNew.Domain.Entity;
+using WareHouseNew.App.Managers;
 
 namespace WareHouseNew.App.Concrete
 {
@@ -14,11 +15,11 @@ namespace WareHouseNew.App.Concrete
         {
             Initialize();
         }
-    
+
         public List<MenuAction> GetMenuActionsByMenuName(string menuName) //metoda która wyświeli wszystkie opcje w zależności od nazwy menuName
         {
             List<MenuAction> result = new List<MenuAction>(); //utworzenie nowej listy "result"
-            foreach (var menuAction in Items) //pętla wszystkich opcji w menu
+            foreach (var menuAction in ObjList) //pętla wszystkich opcji w menu
             {
                 if (menuAction.MenuName == menuName) //jeśli nazwa opcji będzie taka sama jak nazwa menu
                 {
@@ -27,6 +28,7 @@ namespace WareHouseNew.App.Concrete
             }
             return result; //zwrócenie gotowej listy
         }
+
 
         private void Initialize()
         {
@@ -40,7 +42,6 @@ namespace WareHouseNew.App.Concrete
             AddItem(new MenuAction(3, "Gadgets", "AddNewItemMenu"));
             AddItem(new MenuAction(4, "Trousers", "AddNewItemMenu"));
 
-
             AddItem(new MenuAction(0, "List of all products", "ListOfProductsMenu"));
             AddItem(new MenuAction(1, "List of Tshirts products", "ListOfProductsMenu"));
             AddItem(new MenuAction(2, "List of Hoddies products", "ListOfProductsMenu"));
@@ -48,5 +49,6 @@ namespace WareHouseNew.App.Concrete
             AddItem(new MenuAction(4, "List of Trousers products", "ListOfProductsMenu"));
 
         }
-    }
+
+    }      
 }

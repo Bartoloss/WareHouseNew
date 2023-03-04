@@ -9,7 +9,7 @@ namespace WareHouseNew.App.Abstract
 {
     public interface IService<T>
     {
-        List<T> Items { get; set; }
+        List<T> ObjList { get; set; }
         int GetLastId();
         int AddItem(T item);
         void RemoveItem(T item);
