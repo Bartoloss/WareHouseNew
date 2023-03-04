@@ -42,8 +42,21 @@ namespace WareHouseNew.App.Concrete
                 }
                 return productsToShow;
             }
+
         }
 
+        public List<Item>? GetItemsWithLowStack()
+        {
+            List<Item> productsToShow = new List<Item>();
+            foreach (Item Item in ObjList)
+            {
+                if(Item.ChangeAmount(Item.Amount) == false)
+                {
+                    productsToShow.Add(Item);
+                }
+            }
+            return productsToShow;
+        }
           
     }
 }

@@ -16,37 +16,35 @@ namespace WareHouseNew.App.Managers
         public ItemService _itemService;
         public MenuActionService _menuActionService;
         public CategoriesService _categoriesService;
+        public CategoriesManager _categoriesManager;
 
-        public ItemManager(ItemService itemService, MenuActionService menuActionService)
+        public ItemManager(ItemService itemService, MenuActionService menuActionService, CategoriesService categoriesService, CategoriesManager categoriesManager)
         {
             _itemService = itemService;
             _menuActionService = menuActionService; //wstrzyknięcie do managera dwóch serwisów: menuActionService oraz ItemService
+            _categoriesService = categoriesService;
+            _categoriesManager = categoriesManager;
         }
-
 
         public void AddNewItem()
         {
-            Console.WriteLine("Please select the category of added item");
-            var categories = _categoriesService.GetAllItems();
-            if (categories.Any())
+            var AddNewItemMenu = _menuActionService.GetMenuActionsByMenuName("AddItemMenu");
+            for (int i  = 0; i < AddNewItemMenu.Count; i++)
             {
-                foreach (var category in categories)
-                {
-                    Console.WriteLine($"{category.Id}.{category.CategoryName}");
-                }
+                Console.WriteLine($"{AddNewItemMenu[i].Name}");
             }
-            //var addNewItemMenu = _menuActionService.GetMenuActionsByMenuName("AddNewItemMenu"); //do zmiennej "addNewItemMenu" przypisuje opcje menu z kategorii "AddNewItemMenu"
-            string addOperation = Console.ReadLine();
-            int addOperationInt;
+            _categoriesManager.GetAllCategories();
+            string userAddChoice = Console.ReadLine();
+            int AddChoice;
             {
-                if (Int32.TryParse(addOperation, out addOperationInt))
+                if (Int32.TryParse(userAddChoice, out AddChoice))
                 {
-                    switch (addOperationInt)
+                    switch (AddChoice)
                     {
                         case > 1:
                         case < 4:
                             Item product = new Item();
-                            product.CategoryId = addOperationInt;
+                            product.CategoryId = AddChoice;
                             Console.WriteLine("Please enter name for new product:");
                             string userName = Console.ReadLine();
                             product.Name = userName;
@@ -74,6 +72,11 @@ namespace WareHouseNew.App.Managers
         public void RemoveExistItem()
         {
             Console.WriteLine("Please enter id of product you want to delete:");
+            List<Item> allItems = _itemService.GetAllItems();
+            foreach (Item item in allItems)
+            {
+                Console.WriteLine($"{item.Id}. {item.Name}.");
+            }
             string userId = Console.ReadLine();
             int removeId;
             if (Int32.TryParse(userId, out removeId) == true)
@@ -106,38 +109,86 @@ namespace WareHouseNew.App.Managers
             }
         }
 
-
         public void ListOfProductsView()
         {
-            Console.WriteLine("Please select category of products you want to see:");
-            var listOfProductsMenu = _menuActionService.GetMenuActionsByMenuName("ListOfProductsMenu");
-            for (int i = 0; i < listOfProductsMenu.Count; i++) //dla wszystkich znalezionych opcji z kategorii AddNewItemMenu
+            var ListOfProductsViewMenu = _menuActionService.GetMenuActionsByMenuName("ListOfProductsViewMenu");
+            for (int i = 0; i < ListOfProductsViewMenu.Count; i++)
             {
-                Console.WriteLine($"{listOfProductsMenu[i].Id}. {listOfProductsMenu[i].Name}"); //wyświetl na ekranie Id oraz Name tej opcji.
+                if (i == 0)
+                {
+                    Console.WriteLine($"{ListOfProductsViewMenu[i].Name}");
+                }
+                else
+                {
+                    Console.WriteLine($"{ListOfProductsViewMenu[i].Id}.{ListOfProductsViewMenu[i].Name}");
+                }
             }
+
             string userChoiceString = Console.ReadLine();
             int userChoice;
             Int32.TryParse(userChoiceString, out userChoice);
-
-            List<Item> returnedProducts = _itemService.GetItemsByCategory(userChoice);
-
-            if (returnedProducts.Count == 0)
+           
+            switch(userChoice)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("There are no products in category you selected.");
-                Console.ForegroundColor = ConsoleColor.White;
+                case 1:
+                    List<Item> AllProducts = _itemService.GetAllItems();
+                    if(AllProducts.Any())
+                    foreach (Item item in AllProducts)
+                    {
+                        Console.WriteLine($"{item.Id}.{item.Name}");
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine("There are no products with low stack.");
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                        break;
+                case 2:
+                    List<Item>? ProductsWithLowStack = _itemService.GetItemsWithLowStack();
+                    if (ProductsWithLowStack.Any())
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine("List of products with low stack:");
+                        foreach (Item item in ProductsWithLowStack)
+                        {
+                            Console.WriteLine($"{item.Id}.{item.Name}");
+                        }
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine("There are no products with low stack.");
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    break;
+                case 3:
+                    _categoriesManager.GetListOfProducts();
+                    string userChoiceCategoryString = Console.ReadLine();
+                    int userChoiceCategory;
+                    Int32.TryParse(userChoiceCategoryString, out userChoiceCategory);
+                    List<Item> returnedProducts = _itemService.GetItemsByCategory(userChoiceCategory);
+
+                    if (returnedProducts.Count == 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("There are no products in category you selected.");
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else
+                    {
+                        foreach (Item item in returnedProducts)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.WriteLine($"{item.Id}. {item.Name}");
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                    }
+                    break;
             }
-            else
-            {
-                foreach (Item item in returnedProducts)
-                {
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.WriteLine($"{item.Id}. {item.Name}");
-                    Console.ForegroundColor = ConsoleColor.White;
-                }
-            }
+            
         }
-
 
         public void ShowDetails()
         {
@@ -154,6 +205,7 @@ namespace WareHouseNew.App.Managers
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine($"Product details with ID={productToDisplay.Id}:");
             Console.WriteLine($"Name: {productToDisplay.Name}");
+            Console.WriteLine($"Category: {_categoriesService.GetCategoryById(productToDisplay.CategoryId)}");
             Console.WriteLine($"Amount: {productToDisplay.Amount} pcs");
             Console.WriteLine($"Large stock: {productToDisplay.ChangeAmount(productToDisplay.Amount)}");
             Console.WriteLine($"Created Date: {productToDisplay.CreatedDate}");

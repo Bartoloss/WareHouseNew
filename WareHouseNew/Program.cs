@@ -14,8 +14,9 @@ namespace WareHouseNew
             MenuActionService menuActionService = new MenuActionService(); //stworzenie nowego obiektu "menuActionService" serwisu
             ItemService itemService = new ItemService();
             CategoriesService categoriesService = new CategoriesService();
-            ItemManager itemManager = new ItemManager(itemService, menuActionService); //utworzenie nowego obiektu klasy "ItemManager"
             CategoriesManager categoriesManager = new CategoriesManager(categoriesService);
+            ItemManager itemManager = new ItemManager(itemService, menuActionService, categoriesService, categoriesManager); //utworzenie nowego obiektu klasy "ItemManager"
+            
             Console.WriteLine("Please enter your ID user:");
             string userName = Console.ReadLine();
             Int32.TryParse(userName, out int userNameInt);

@@ -31,14 +31,30 @@ namespace WareHouseNew.App.Managers
             }
         }
 
-        public void ViewListOfCategories()
+        public void GetAllCategories()
         {
-            List<Categories> allCategories = _categoriesService.GetAllItems();
-            foreach (Categories category in allCategories)
+            var categories = _categoriesService.GetAllItems();
+            if (categories.Any())
             {
-                Console.WriteLine($"List of {category.CategoryName} products.");
+                foreach (var category in categories)
+                {
+                    Console.WriteLine($"{category.Id}.{category.CategoryName}");
+                }
             }
+        }
 
+        public void GetListOfProducts()
+        {
+            var categories = _categoriesService.GetAllItems();
+            if (categories.Any())
+            {
+                Console.WriteLine("Please select category of products to display:");
+                foreach (var category in categories)
+                {
+                    Console.WriteLine($"{category.Id}.List of {category.CategoryName} products.");
+                }
+                
+            }
         }
     }
 }
