@@ -16,22 +16,19 @@ namespace WareHouseNew.App.Managers
         {
             _categoriesService = categoriesService;
         }
-            
 
-        public void AddCategories(int amountOfCategories)
+        public void AddCategory(int categoryId)
         {
-            for (int i = 1; i <= amountOfCategories; i++)
-            {
-                Categories category = new Categories();
-                category.Id = i;
-                Console.WriteLine($"Please enter name of {i} category:");
-                string userNameCategory = Console.ReadLine();
-                category.CategoryName = userNameCategory;
-                _categoriesService.AddItem(category);
-            }
-        }
+            Categories category = new Categories();
+            category.Id = categoryId;
+            Console.WriteLine($"Please enter name of {categoryId} category:");
+            string userNameCategory = Console.ReadLine();
+            category.CategoryName = userNameCategory;
+            _categoriesService.AddItem(category);
 
-        public void GetAllCategories()
+        }
+        
+        public void ViewAllCategories()
         {
             var categories = _categoriesService.GetAllItems();
             if (categories.Any())
@@ -43,7 +40,7 @@ namespace WareHouseNew.App.Managers
             }
         }
 
-        public void GetListOfProducts()
+        public void ViewListOfCategories()
         {
             var categories = _categoriesService.GetAllItems();
             if (categories.Any())

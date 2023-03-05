@@ -11,7 +11,7 @@ namespace WareHouseNew.App.Concrete
 {
     public class CategoriesService : BaseService<Categories>
     {
-        public string? GetCategoryById(int id)
+        public string? GetCategoryByName(int id)
         {
             foreach (Categories category in ObjList)
             {
@@ -23,6 +23,15 @@ namespace WareHouseNew.App.Concrete
             return null;
         }
 
+        public int GetNumberOfCategories ()
+        {
+            int numberOfCategories = 0;
+            foreach (Categories category in ObjList)
+            {
+                numberOfCategories++;
+            }
+            return numberOfCategories;
+        }
     }
 }
 

@@ -26,8 +26,11 @@ namespace WareHouseNew
             Console.WriteLine("How many categories do you want to enter?:");
             string userAmountOfCategories = Console.ReadLine();
             Int32.TryParse(userAmountOfCategories, out int amountOfCategories);
-            categoriesManager.AddCategories(amountOfCategories);
 
+            for (int i = 1; i <= amountOfCategories; i++)
+            {
+                categoriesManager.AddCategory(i);
+            }
             
             while (true)
             {
