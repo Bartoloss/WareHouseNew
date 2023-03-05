@@ -166,7 +166,6 @@ namespace WareHouseNew.App.Managers
                     int userChoiceCategory;
                     Int32.TryParse(userChoiceCategoryString, out userChoiceCategory);
                     List<Item> returnedProducts = _itemService.GetItemsByCategory(userChoiceCategory);
-
                     if (returnedProducts.Count == 0)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
