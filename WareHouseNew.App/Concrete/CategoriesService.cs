@@ -23,14 +23,14 @@ namespace WareHouseNew.App.Concrete
             return null;
         }
 
-        public int GetNumberOfCategories ()
+        public int GetNumberOfAllCategories ()
         {
-            int numberOfCategories = 0;
+            int numberOfAllCategories = 0;
             foreach (Categories category in ObjList)
             {
-                numberOfCategories++;
+                numberOfAllCategories++;
             }
-            return numberOfCategories;
+            return numberOfAllCategories;
         }
     }
 }

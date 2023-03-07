@@ -11,51 +11,44 @@ namespace WareHouseNew.App.Concrete
 {
     public class ItemService : BaseService<Item>
     {
-
-        public Item? GetItemById(int userId) //pytajnik daje się, żeby można było zwrócić nulla, tam gdzie zadeklarowano że będzie zwrócony obiekt
+        public Item? GetItemById(int userChoiceIdOfProduct) //pytajnik daje się, żeby można było zwrócić nulla, tam gdzie zadeklarowano że będzie zwrócony obiekt
         {
-            foreach (Item Item in ObjList)
+            foreach (Item product in ObjList)
             {
-                if (Item.Id == userId)
+                if (product.Id == userChoiceIdOfProduct)
                 {
-                    return Item;
+                    return product;
                 }
             }
             return null;
         }
 
-        public List<Item>? GetItemsByCategory(int userCategory)
+        public List<Item>? GetItemsByCategory(int userChoiceCategoryOfProducts)
         {
             List<Item> productsToShow = new List<Item>();
-            if (userCategory == 0)
+            foreach (Item product in ObjList)
             {
-                return ObjList;
-            }
-            else
-            {
-                foreach (Item Item in ObjList)
+                if (product.CategoryId == userChoiceCategoryOfProducts)
                 {
-                    if (Item.CategoryId == userCategory)
-                    {
-                        productsToShow.Add(Item);
-                    }
+                    productsToShow.Add(product);
                 }
-                return productsToShow;
             }
+            return productsToShow;
+            
 
         }
 
         public List<Item>? GetItemsWithLowStack()
         {
-            List<Item> productsToShow = new List<Item>();
-            foreach (Item Item in ObjList)
+            List<Item> productsWithLowStack = new List<Item>();
+            foreach (Item product in ObjList)
             {
-                if(Item.ChangeAmount(Item.Amount) == false)
+                if(product.ChangeAmount(product.Amount) == false)
                 {
-                    productsToShow.Add(Item);
+                    productsWithLowStack.Add(product);
                 }
             }
-            return productsToShow;
+            return productsWithLowStack;
         }
           
     }

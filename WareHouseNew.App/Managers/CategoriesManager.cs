@@ -22,18 +22,18 @@ namespace WareHouseNew.App.Managers
             Categories category = new Categories();
             category.Id = categoryId;
             Console.WriteLine($"Please enter name of {categoryId} category:");
-            string userNameCategory = Console.ReadLine();
-            category.CategoryName = userNameCategory;
+            string userNameOfAddedCategory = Console.ReadLine();
+            category.CategoryName = userNameOfAddedCategory;
             _categoriesService.AddItem(category);
 
         }
         
         public void ViewAllCategories()
         {
-            var categories = _categoriesService.GetAllItems();
-            if (categories.Any())
+            var allCategories = _categoriesService.GetAllItems();
+            if (allCategories.Any())
             {
-                foreach (var category in categories)
+                foreach (var category in allCategories)
                 {
                     Console.WriteLine($"{category.Id}.{category.CategoryName}");
                 }
@@ -42,11 +42,11 @@ namespace WareHouseNew.App.Managers
 
         public void ViewListOfCategories()
         {
-            var categories = _categoriesService.GetAllItems();
-            if (categories.Any())
+            var ListofAllCategories = _categoriesService.GetAllItems();
+            if (ListofAllCategories.Any())
             {
                 Console.WriteLine("Please select category of products to display:");
-                foreach (var category in categories)
+                foreach (var category in ListofAllCategories)
                 {
                     Console.WriteLine($"{category.Id}.List of {category.CategoryName} products.");
                 }

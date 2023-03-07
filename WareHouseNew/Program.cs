@@ -18,10 +18,10 @@ namespace WareHouseNew
             ItemManager itemManager = new ItemManager(itemService, menuActionService, categoriesService, categoriesManager); //utworzenie nowego obiektu klasy "ItemManager"
             
             Console.WriteLine("Please enter your ID user:");
-            string userName = Console.ReadLine();
-            Int32.TryParse(userName, out int userNameInt);
-            Console.WriteLine("Thank you! Hello user of ID="+userNameInt);
-            User.ID = userNameInt;
+            string userchoiceId = Console.ReadLine();
+            Int32.TryParse(userchoiceId, out int userId);
+            Console.WriteLine("Thank you! Hello user of ID="+userId);
+            User.ID = userId;
 
             Console.WriteLine("How many categories do you want to enter?:");
             string userAmountOfCategories = Console.ReadLine();
