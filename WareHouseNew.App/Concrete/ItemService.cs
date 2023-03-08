@@ -34,8 +34,6 @@ namespace WareHouseNew.App.Concrete
                 }
             }
             return productsToShow;
-            
-
         }
 
         public List<Item>? GetItemsWithLowStack()
@@ -50,7 +48,6 @@ namespace WareHouseNew.App.Concrete
             }
             return productsWithLowStack;
         }
-          
     }
 }
 

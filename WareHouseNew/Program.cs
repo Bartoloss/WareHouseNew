@@ -16,21 +16,33 @@ namespace WareHouseNew
             CategoriesService categoriesService = new CategoriesService();
             CategoriesManager categoriesManager = new CategoriesManager(categoriesService);
             ItemManager itemManager = new ItemManager(itemService, menuActionService, categoriesService, categoriesManager); //utworzenie nowego obiektu klasy "ItemManager"
-            
-            Console.WriteLine("Please enter your ID user:");
-            string userchoiceId = Console.ReadLine();
-            Int32.TryParse(userchoiceId, out int userId);
-            Console.WriteLine("Thank you! Hello user of ID="+userId);
-            User.ID = userId;
 
-            Console.WriteLine("How many categories do you want to enter?:");
-            string userAmountOfCategories = Console.ReadLine();
-            Int32.TryParse(userAmountOfCategories, out int amountOfCategories);
+            string userChoiceIdOfUser;
+            int idOfUser;
+            do
+            {
+                Console.WriteLine("Please enter your ID user:");
+                userChoiceIdOfUser = Console.ReadLine();
+            }
+            while (Int32.TryParse(userChoiceIdOfUser, out idOfUser) == false);
+            Console.WriteLine("Thank you! Hello user of ID=" + idOfUser);
+            User.ID = idOfUser;
+
+            string userChoiceAmountOfCategories;
+            int amountOfCategories;
+            do
+            {
+                Console.WriteLine("How many categories do you want to enter?:");
+                
+                userChoiceAmountOfCategories = Console.ReadLine();
+            }
+            while ((Int32.TryParse(userChoiceAmountOfCategories, out amountOfCategories)) == false);
 
             for (int i = 1; i <= amountOfCategories; i++)
             {
-                categoriesManager.AddCategory(i);
+                categoriesManager.AddCategory();
             }
+            
             
             while (true)
             {
@@ -41,7 +53,7 @@ namespace WareHouseNew
                     Console.WriteLine($"{mainMenu[i].Id}. {mainMenu[i].Name}"); //wyświetl na ekranie Id oraz Name tej opcji.
                 }
 
-                string operation = Console.ReadLine(); //odczyt zmiennej "operation" podanej przez użytkownika
+                string operation = Console.ReadLine();
                 switch(operation)
                 {
                     case "1":
@@ -55,6 +67,22 @@ namespace WareHouseNew
                         break;
                     case "4":
                         itemManager.ShowDetails();
+                        break;
+                    case "5":
+                        string userChoiceAmountOfCategoriesToAdd;
+                        int amountOfCategoriesToAdd;
+                        do
+                        {
+                            Console.WriteLine("How many categories do you want to enter?:");
+                            userChoiceAmountOfCategoriesToAdd = Console.ReadLine();
+                        }
+                        while ((Int32.TryParse(userChoiceAmountOfCategories, out amountOfCategoriesToAdd)) == false);
+                        {
+                            for (int i = 1; i <= amountOfCategoriesToAdd; i++)
+                            {
+                                categoriesManager.AddCategory();
+                            }
+                        }
                         break;
                     default:
                         Console.WriteLine("Option you have entered does not exist");

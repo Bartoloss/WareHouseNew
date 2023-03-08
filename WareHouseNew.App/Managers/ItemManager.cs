@@ -20,8 +20,8 @@ namespace WareHouseNew.App.Managers
 
         public ItemManager(ItemService itemService, MenuActionService menuActionService, CategoriesService categoriesService, CategoriesManager categoriesManager)
         {
-            _itemService = itemService;
-            _menuActionService = menuActionService; //wstrzyknięcie do managera dwóch serwisów: menuActionService oraz ItemService
+            _itemService = itemService; //wstrzyknięcie do managera trzech serwisów: menuActionService, ItemService oraz CategoriesService
+            _menuActionService = menuActionService; 
             _categoriesService = categoriesService;
             _categoriesManager = categoriesManager;
         }
@@ -56,12 +56,16 @@ namespace WareHouseNew.App.Managers
                     }
                     else
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Number of category you entered does not exist.");
+                        Console.ForegroundColor = ConsoleColor.White;
                     }
                 }
                 else
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Error! Please enter the number, not letter or word.");
+                    Console.ForegroundColor = ConsoleColor.White;
                 }
             }
         }
@@ -78,7 +82,7 @@ namespace WareHouseNew.App.Managers
             int idOfProductToRemove;
             if (Int32.TryParse(userchoiceIdOfProductToRemove, out idOfProductToRemove) == true)
             {
-                if (idOfProductToRemove < 0)
+                if (idOfProductToRemove <= 0)
                 {
                     RemoveExistItem();
                 }
@@ -95,137 +99,182 @@ namespace WareHouseNew.App.Managers
                     {
                         _itemService.RemoveItem(productToRemove);
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine($"Product of id={idOfProductToRemove} was deleted successfully!");
+                        Console.WriteLine($"Product {productToRemove.Name} of id={productToRemove.Id} was deleted successfully!");
                         Console.ForegroundColor = ConsoleColor.White;
                     }
                 }
             }
             else
             {
-                Console.WriteLine("Please enter a number");
+                Console.WriteLine("Error! Please enter the number, not letter or word.");
             }
         }
 
         public void ListOfProductsView()
         {
-            Console.WriteLine("Please select an option for products to display:"); 
-            var ListOfProductsViewMenu = _menuActionService.GetMenuActionsByMenuName("ListOfProductsViewMenu");
-            for (int i = 0; i < ListOfProductsViewMenu.Count; i++)
+            List<Item> allProducts = _itemService.GetAllItems();
+            if (allProducts.Count != 0)
             {
+                Console.WriteLine("Please select an option for products to display:");
+                var ListOfProductsViewMenu = _menuActionService.GetMenuActionsByMenuName("ListOfProductsViewMenu");
+                for (int i = 0; i < ListOfProductsViewMenu.Count; i++)
+                {
+                    Console.WriteLine($"{ListOfProductsViewMenu[i].Id}.{ListOfProductsViewMenu[i].Name}");
+                }
+                string userChoiceNumberOfMenu = Console.ReadLine();
+                int numberOfMenu;
+                if (Int32.TryParse(userChoiceNumberOfMenu, out numberOfMenu))
+                {
+                    switch (numberOfMenu)
+                    {
+                        case 1:
+                            List<Item> allAddedProducts = _itemService.GetAllItems();
+                            if (allAddedProducts.Any())
+                            {
+                                foreach (Item product in allAddedProducts)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                    Console.WriteLine($"{product.Id}.{product.Name}");
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                }
+                            }
+                            break;
+                        case 2:
+                            List<Item>? productsWithLowStack = _itemService.GetItemsWithLowStack();
+                            if (productsWithLowStack.Any())
+                            {
+                                Console.ForegroundColor = ConsoleColor.Blue;
+                                Console.WriteLine("List of products with low stack:");
+                                foreach (Item product in productsWithLowStack)
+                                {
+                                    Console.WriteLine($"{product.Id}.{product.Name}");
+                                }
+                                Console.ForegroundColor = ConsoleColor.White;
+                            }
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.Blue;
+                                Console.WriteLine("There are no products with low stack.");
+                                Console.ForegroundColor = ConsoleColor.White;
+                            }
+                            break;
+                        case 3:
+                            _categoriesManager.ViewListOfCategories();
+                            string userChoiceCategoryOfProducts = Console.ReadLine();
+                            int CategoryOfProducts;
+                            Int32.TryParse(userChoiceCategoryOfProducts, out CategoryOfProducts);
+                            List<Item>? returnedProducts = _itemService.GetItemsByCategory(CategoryOfProducts);
+                            if (returnedProducts.Count == 0) 
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("There are no products in category you selected.");
+                                Console.ForegroundColor = ConsoleColor.White;
+                            }
+                            else
+                            {
+                                foreach (Item product in returnedProducts)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                    Console.WriteLine($"{product.Id}. {product.Name}");
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                }
+                            }
+                            break;
+                        default:
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("Option you entered does not exist.");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            break;
 
-                Console.WriteLine($"{ListOfProductsViewMenu[i].Id}.{ListOfProductsViewMenu[i].Name}");
-
+                    }
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error! Please enter the number, not letter or word.");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("There are no added products. Add product first.");
+                Console.ForegroundColor = ConsoleColor.White;
             }
 
-            string userChoiceNumberOfMenu = Console.ReadLine();
-            int numberOfMenu;
-            Int32.TryParse(userChoiceNumberOfMenu, out numberOfMenu);
-           
-            switch(numberOfMenu)
-            {
-                case 1:
-                    List<Item> allProducts = _itemService.GetAllItems();
-                    if (allProducts.Any())
-                    {
-                        foreach (Item product in allProducts)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.WriteLine($"{product.Id}.{product.Name}");
-                            Console.ForegroundColor = ConsoleColor.White;
-                        }
-                    }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.Blue;
-                        Console.WriteLine("There are no products with low stack.");
-                        Console.ForegroundColor = ConsoleColor.White;
-                    }
-                        break;
-                case 2:
-                    List<Item>? productsWithLowStack = _itemService.GetItemsWithLowStack();
-                    if (productsWithLowStack.Any())
-                    {
-                        Console.ForegroundColor = ConsoleColor.Blue;
-                        Console.WriteLine("List of products with low stack:");
-                        foreach (Item product in productsWithLowStack)
-                        {
-                            Console.WriteLine($"{product.Id}.{product.Name}");
-                        }
-                        Console.ForegroundColor = ConsoleColor.White;
-                    }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.Blue;
-                        Console.WriteLine("There are no products with low stack.");
-                        Console.ForegroundColor = ConsoleColor.White;
-                    }
-                    break;
-                case 3:
-                    _categoriesManager.ViewListOfCategories();
-                    string userChoiceCategoryOfProducts = Console.ReadLine();
-                    int CategoryOfProducts;
-                    Int32.TryParse(userChoiceCategoryOfProducts, out CategoryOfProducts);
-                    List<Item>? returnedProducts = _itemService.GetItemsByCategory(CategoryOfProducts);
-                    if (returnedProducts == null)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("There are no products in category you selected.");
-                        Console.ForegroundColor = ConsoleColor.White;
-                    }
-                    else
-                    {
-                        foreach (Item product in returnedProducts)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.WriteLine($"{product.Id}. {product.Name}");
-                            Console.ForegroundColor = ConsoleColor.White;
-                        }
-                    }
-                    break;
-            }
-            
         }
 
         public void ShowDetails()
         {
+            List <Item> allProducts = _itemService.GetAllItems();
+            if (allProducts.Count != 0)
+            {
             Console.WriteLine("Please select the category to which the product belongs:");
             _categoriesManager.ViewAllCategories();
             string userChoiceCategoryOfProductToDisplay = Console.ReadLine();
             int CategoryOfProductToDisplay;
 
-            if (Int32.TryParse(userChoiceCategoryOfProductToDisplay, out CategoryOfProductToDisplay))
-            {
-                List<Item>? productsByCategory = _itemService.GetItemsByCategory(CategoryOfProductToDisplay);
-                Console.WriteLine("Please select ID of the product whose details you want to see: ");
-                if (productsByCategory == null)
+                if (Int32.TryParse(userChoiceCategoryOfProductToDisplay, out CategoryOfProductToDisplay))
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("There are no products in category you chosen.");
-                    Console.ForegroundColor = ConsoleColor.White;
+                    List<Item>? productsByCategory = _itemService.GetItemsByCategory(CategoryOfProductToDisplay);
+                    if (productsByCategory.Count == 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("There are no products in category you chosen.");
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please select ID of the product whose details you want to see: ");
+                        foreach (Item product in productsByCategory)
+                        {
+                            Console.WriteLine($"{product.Id}. {product.Name}.");
+                        }
+                        string userChoiceIdOfProductToDisplay = Console.ReadLine();
+                        int IdOfProductToDisplay;
+                        if (Int32.TryParse(userChoiceIdOfProductToDisplay, out IdOfProductToDisplay))
+                        {
+                            Item? productToDisplay = _itemService.GetItemById(IdOfProductToDisplay);
+                            if (productToDisplay != null)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Blue;
+                                Console.WriteLine($"Product details with ID={productToDisplay.Id}:");
+                                Console.WriteLine($"Name: {productToDisplay.Name}");
+                                Console.WriteLine($"Category: {_categoriesService.GetCategoryByName(productToDisplay.CategoryId)}");
+                                Console.WriteLine($"Amount: {productToDisplay.Amount} pcs");
+                                Console.WriteLine($"Large stock: {productToDisplay.ChangeAmount(productToDisplay.Amount)}");
+                                Console.WriteLine($"Created Date: {productToDisplay.CreatedDate}");
+                                Console.WriteLine($"Created by user ID: {User.ID}");
+                                Console.ForegroundColor = ConsoleColor.White;
+                            }
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("Product of id you entered does not exist.");
+                                Console.ForegroundColor = ConsoleColor.White;
+                            }
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("Error! Please enter the number, not letter or word.");
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                    }
+                    
                 }
                 else
                 {
-                    foreach (Item product in productsByCategory)
-                    {
-                        Console.WriteLine($"{product.Id}. {product.Name}.");
-                    }
-                    string userChoiceIdOfProductToDisplay = Console.ReadLine();
-                    int IdOfProductToDisplay;
-                    Int32.TryParse(userChoiceIdOfProductToDisplay, out IdOfProductToDisplay);
-                    Item? productToDisplay = _itemService.GetItemById(IdOfProductToDisplay);
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    if (productToDisplay != null)
-                    {
-                        Console.WriteLine($"Product details with ID={productToDisplay.Id}:");
-                        Console.WriteLine($"Name: {productToDisplay.Name}");
-                        Console.WriteLine($"Category: {_categoriesService.GetCategoryByName(productToDisplay.CategoryId)}");
-                        Console.WriteLine($"Amount: {productToDisplay.Amount} pcs");
-                        Console.WriteLine($"Large stock: {productToDisplay.ChangeAmount(productToDisplay.Amount)}");
-                        Console.WriteLine($"Created Date: {productToDisplay.CreatedDate}");
-                        Console.WriteLine($"Created by user ID: {User.ID}");
-                        Console.ForegroundColor = ConsoleColor.White;
-                    }
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error! Please enter the number, not letter or word.");
+                    Console.ForegroundColor = ConsoleColor.White;
                 }
+            }
+            else 
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("There are no added products. Add product first.");
+                Console.ForegroundColor = ConsoleColor.White;
             }
             
         }

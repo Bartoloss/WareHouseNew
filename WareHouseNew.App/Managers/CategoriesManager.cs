@@ -17,15 +17,31 @@ namespace WareHouseNew.App.Managers
             _categoriesService = categoriesService;
         }
 
-        public void AddCategory(int categoryId)
+        public void AddCategory()
         {
             Categories category = new Categories();
-            category.Id = categoryId;
+            int categoryId = _categoriesService.GetLastId() + 1;
+            string userNameOfAddedCategory;
+            
             Console.WriteLine($"Please enter name of {categoryId} category:");
-            string userNameOfAddedCategory = Console.ReadLine();
-            category.CategoryName = userNameOfAddedCategory;
-            _categoriesService.AddItem(category);
+            userNameOfAddedCategory = Console.ReadLine();
 
+            if (string.IsNullOrEmpty(userNameOfAddedCategory))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Failed to add category.");
+                Console.ForegroundColor = ConsoleColor.White;
+                AddCategory();
+            }
+            else
+            {
+                category.CategoryName = userNameOfAddedCategory;
+                categoryId = _categoriesService.AddItem(category);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"Category {category.CategoryName} with ID={categoryId} was added successfully. ");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            
         }
         
         public void ViewAllCategories()

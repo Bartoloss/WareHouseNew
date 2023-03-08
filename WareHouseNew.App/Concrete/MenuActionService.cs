@@ -36,15 +36,12 @@ namespace WareHouseNew.App.Concrete
             AddItem(new MenuAction(2, "Remove product.", "MainMenu"));
             AddItem(new MenuAction(3, "List of products.", "MainMenu"));
             AddItem(new MenuAction(4, "Show details of product.", "MainMenu"));
+            AddItem(new MenuAction(5, "Add categories of products.", "MainMenu"));
 
-            
+
             AddItem(new MenuAction(1, "List of all products.", "ListOfProductsViewMenu")); //można dodać z tym samym id, ponieważ oba elementy z id=1 są elementami dwóch niezależnych menu
             AddItem(new MenuAction(2, "List of products with low stack.", "ListOfProductsViewMenu"));
             AddItem(new MenuAction(3, "List of products by chosen category.", "ListOfProductsViewMenu"));
-
-
-
-
 
         }
 
