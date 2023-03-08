@@ -28,85 +28,105 @@ namespace WareHouseNew.App.Managers
 
         public void AddNewItem()
         {
-            Console.WriteLine("Please select the category of added item:");
-            _categoriesManager.ViewAllCategories();
-            string userChoiceCategory = Console.ReadLine();
-            int choiceCategory;
+            List<Categories> allCategories = _categoriesService.GetAllItems();
+            if (allCategories.Count == 0)
             {
-                if (Int32.TryParse(userChoiceCategory, out choiceCategory))
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("First you need to add a category.");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            else
+            {
+                Console.WriteLine("Please select the category of added item:");
+                _categoriesManager.ViewAllCategories();
+                string userChoiceCategory = Console.ReadLine();
+                int choiceCategory;
                 {
-                    int numberOfCategories = _categoriesService.GetNumberOfAllCategories();
-                    if (choiceCategory <= numberOfCategories)
+                    if (Int32.TryParse(userChoiceCategory, out choiceCategory))
                     {
-                        Item product = new Item();
-                        product.CategoryId = choiceCategory;
-                        Console.WriteLine("Please enter name for new product:");
-                        string userChoiceNameOfProduct = Console.ReadLine();
-                        product.Name = userChoiceNameOfProduct;
-                        Console.WriteLine("Please enter amount of new product:");
-                        string userChoiceAmountOfProduct = Console.ReadLine();
-                        int amountOfProduct;
-                        Int32.TryParse(userChoiceAmountOfProduct, out amountOfProduct);
-                        product.Amount = amountOfProduct;
-                        product.CreatedDate = DateTime.Now;
-                        int addedProductId = _itemService.AddItem(product);
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine($"Product {product.Name} was added successfully with number of id={addedProductId}.");
-                        Console.ForegroundColor = ConsoleColor.White;
+                        int numberOfCategories = _categoriesService.GetNumberOfAllCategories();
+                        if (choiceCategory <= numberOfCategories)
+                        {
+                            Item product = new Item();
+                            product.CategoryId = choiceCategory;
+                            Console.WriteLine("Please enter name for new product:");
+                            string userChoiceNameOfProduct = Console.ReadLine();
+                            product.Name = userChoiceNameOfProduct;
+                            Console.WriteLine("Please enter amount of new product:");
+                            string userChoiceAmountOfProduct = Console.ReadLine();
+                            int amountOfProduct;
+                            Int32.TryParse(userChoiceAmountOfProduct, out amountOfProduct);
+                            product.Amount = amountOfProduct;
+                            product.CreatedDate = DateTime.Now;
+                            int addedProductId = _itemService.AddItem(product);
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine($"Product {product.Name} was added successfully with number of id={addedProductId}.");
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("Number of category you entered does not exist.");
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
                     }
                     else
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Number of category you entered does not exist.");
+                        Console.WriteLine("Error! Please enter the number, not letter or word.");
                         Console.ForegroundColor = ConsoleColor.White;
                     }
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Error! Please enter the number, not letter or word.");
-                    Console.ForegroundColor = ConsoleColor.White;
                 }
             }
         }
 
         public void RemoveExistItem()
         {
-            Console.WriteLine("Please enter id of product you want to delete:");
-            List<Item> allProducts = _itemService.GetAllItems();
-            foreach (Item product in allProducts)
+            List<Item> areProducts = _itemService.GetAllItems();
+            if (areProducts.Count == 0)
             {
-                Console.WriteLine($"{product.Id}. {product.Name}.");
-            }
-            string userchoiceIdOfProductToRemove = Console.ReadLine();
-            int idOfProductToRemove;
-            if (Int32.TryParse(userchoiceIdOfProductToRemove, out idOfProductToRemove) == true)
-            {
-                if (idOfProductToRemove <= 0)
-                {
-                    RemoveExistItem();
-                }
-                else if (idOfProductToRemove > 0)
-                {
-                    Item? productToRemove = _itemService.GetItemById(idOfProductToRemove);
-                    if (productToRemove == null)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Product of id you entered does not exist.");
-                        Console.ForegroundColor = ConsoleColor.White;
-                    }
-                    else
-                    {
-                        _itemService.RemoveItem(productToRemove);
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine($"Product {productToRemove.Name} of id={productToRemove.Id} was deleted successfully!");
-                        Console.ForegroundColor = ConsoleColor.White;
-                    }
-                }
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("First you need to add a product.");
+                Console.ForegroundColor = ConsoleColor.White;
             }
             else
             {
-                Console.WriteLine("Error! Please enter the number, not letter or word.");
+                Console.WriteLine("Please enter id of product you want to delete:");
+                List<Item> allProducts = _itemService.GetAllItems();
+                foreach (Item product in allProducts)
+                {
+                    Console.WriteLine($"{product.Id}. {product.Name}.");
+                }
+                string userchoiceIdOfProductToRemove = Console.ReadLine();
+                int idOfProductToRemove;
+                if (Int32.TryParse(userchoiceIdOfProductToRemove, out idOfProductToRemove) == true)
+                {
+                    if (idOfProductToRemove <= 0)
+                    {
+                        RemoveExistItem();
+                    }
+                    else if (idOfProductToRemove > 0)
+                    {
+                        Item? productToRemove = _itemService.GetItemById(idOfProductToRemove);
+                        if (productToRemove == null)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("Product of id you entered does not exist.");
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                        else
+                        {
+                            _itemService.RemoveItem(productToRemove);
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine($"Product {productToRemove.Name} of id={productToRemove.Id} was deleted successfully!");
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Error! Please enter the number, not letter or word.");
+                }
             }
         }
 

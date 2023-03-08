@@ -28,22 +28,6 @@ namespace WareHouseNew
             Console.WriteLine("Thank you! Hello user of ID=" + idOfUser);
             User.ID = idOfUser;
 
-            string userChoiceAmountOfCategories;
-            int amountOfCategories;
-            do
-            {
-                Console.WriteLine("How many categories do you want to enter?:");
-                
-                userChoiceAmountOfCategories = Console.ReadLine();
-            }
-            while ((Int32.TryParse(userChoiceAmountOfCategories, out amountOfCategories)) == false);
-
-            for (int i = 1; i <= amountOfCategories; i++)
-            {
-                categoriesManager.AddCategory();
-            }
-            
-            
             while (true)
             {
                 Console.WriteLine("Please let me know what you want to do:");
@@ -76,7 +60,7 @@ namespace WareHouseNew
                             Console.WriteLine("How many categories do you want to enter?:");
                             userChoiceAmountOfCategoriesToAdd = Console.ReadLine();
                         }
-                        while ((Int32.TryParse(userChoiceAmountOfCategories, out amountOfCategoriesToAdd)) == false);
+                        while ((Int32.TryParse(userChoiceAmountOfCategoriesToAdd, out amountOfCategoriesToAdd)) == false);
                         {
                             for (int i = 1; i <= amountOfCategoriesToAdd; i++)
                             {
