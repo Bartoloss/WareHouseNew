@@ -8,43 +8,43 @@ namespace WareHouseNewTests
 {
     public class CategoriesManagerTests
     {
-        [Fact]
-        public void AddCategory_AddsCategoryToTheList()
-        {
-            //Arrange
+        //[Fact]
+        //public void AddCategory_AddsCategoryToTheList()
+        //{
+        //    //Arrange
 
 
-            //Act
+        //    //Act
 
 
-            //Assert
-        }
+        //    //Assert
+        //}
 
-        [Fact]
-        public void ViewAllCategories_ReturnsIdAndNameOfCategory()
-        {
-            //Arrange
-
-
-            //Act
+        //[Fact]
+        //public void ViewAllCategories_ReturnsIdAndNameOfCategory()
+        //{
+        //    //Arrange
 
 
-            //Assert
-        }
-
-        [Fact]
-        public void ViewListOfCategories_ReturnsIdAndNameOfCategoryWithText()
-        {
-            //Arrange
+        //    //Act
 
 
-            //Act
+        //    //Assert
+        //}
+
+        //[Fact]
+        //public void ViewListOfCategories_ReturnsIdAndNameOfCategoryWithText()
+        //{
+        //    //Arrange
 
 
-            //Assert
-        }
+        //    //Act
+
+
+        //    //Assert
+        //}
 
 
     }
 }
-}
+

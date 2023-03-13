@@ -20,7 +20,7 @@ namespace WareHouseNewTests
             Item product1 = new Item() { Id = 1, Name = "Product1" };
             var mock = new Mock<ItemService>();
             mock.Setup(s => s.AddItem(product1)).Returns(product1.Id);
-            var manager = new ItemManager(mock.Object, new MenuActionService(), new CategoriesService(), new CategoriesManager());
+            var manager = new ItemManager(mock.Object, new MenuActionService(), new CategoriesService(), new CategoriesManager(new CategoriesService ()));
 
             //Act
             manager.AddNewItem();

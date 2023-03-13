@@ -12,10 +12,6 @@ namespace WareHouseNew.App.Managers
     {
         public CategoriesService _categoriesService;
 
-        public CategoriesManager()
-        {
-        }
-
         public CategoriesManager(CategoriesService categoriesService)
         {
             _categoriesService = categoriesService;

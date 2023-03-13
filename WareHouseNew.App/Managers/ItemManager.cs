@@ -22,7 +22,7 @@ namespace WareHouseNew.App.Managers
         public ItemManager(ItemService itemService, MenuActionService menuActionService, CategoriesService categoriesService, CategoriesManager categoriesManager)
         {
             _itemService = itemService; //wstrzyknięcie do managera trzech serwisów: menuActionService, ItemService oraz CategoriesService
-            _menuActionService = menuActionService; 
+            _menuActionService = menuActionService;
             _categoriesService = categoriesService;
             _categoriesManager = categoriesManager;
         }
