@@ -5,6 +5,7 @@ using System.Reflection.Metadata;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using WareHouseNew.App.Abstract;
 using WareHouseNew.App.Concrete;
 using WareHouseNew.App.Helpers;
 using WareHouseNew.Domain.Entity;
@@ -260,7 +261,9 @@ namespace WareHouseNew.App.Managers
                                 Console.ForegroundColor = ConsoleColor.Blue;
                                 Console.WriteLine($"Product details with ID={productToDisplay.Id}:");
                                 Console.WriteLine($"Name: {productToDisplay.Name}");
-                                Console.WriteLine($"Category: {_categoriesService.GetCategoryByName(productToDisplay.CategoryId)}");
+                                Categories returnCategory = _categoriesService.GetCategoryById(productToDisplay.CategoryId);
+
+                                Console.WriteLine($"Category: {returnCategory.CategoryName}");
                                 Console.WriteLine($"Amount: {productToDisplay.Amount} pcs");
                                 Console.WriteLine($"Large stock: {productToDisplay.ChangeAmount(productToDisplay.Amount)}");
                                 Console.WriteLine($"Created Date: {productToDisplay.CreatedDate}");

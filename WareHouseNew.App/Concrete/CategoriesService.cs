@@ -11,17 +11,18 @@ namespace WareHouseNew.App.Concrete
 {
     public class CategoriesService : BaseService<Categories>
     {
-        public string? GetCategoryByName(int id)
+        public Categories? GetCategoryById(int userChoiceIdOfCategory) 
         {
             foreach (Categories category in ObjList)
             {
-                if (category.Id == id)
+                if (category.Id == userChoiceIdOfCategory)
                 {
-                    return category.CategoryName;
+                    return category;
                 }
             }
             return null;
         }
+       
 
         public int GetNumberOfAllCategories ()
         {
