@@ -13,7 +13,6 @@ namespace WareHouseNewTests
 {
     public class ItemManagerTests
     {
-
         [Fact]
         public void AddNewItem_AddsProductToTheList()
         {
