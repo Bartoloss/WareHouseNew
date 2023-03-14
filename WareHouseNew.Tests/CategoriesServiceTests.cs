@@ -11,6 +11,7 @@ namespace WareHouseNew.Tests
 {
     public class CategoriesServiceTests
     {
+
         [Fact]
         public void AddItem_AddsCategoryToTheList()
         {
