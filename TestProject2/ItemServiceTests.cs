@@ -30,6 +30,7 @@ namespace WareHouseNewTests
         [Fact]
         public void RemoveItem_RemoveProductFromTheList()
         {
+
             //Arrange
             ItemService itemService = new ItemService();
             Item product = new Item() { Id = 1, Name = "Product1" };
