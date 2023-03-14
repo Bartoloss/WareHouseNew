@@ -9,7 +9,6 @@ namespace WareHouseNewTests
 {
     public class ItemServiceTests
     {
-
         [Fact]
         public void AddItem_AddsProductToTheList()
         {
