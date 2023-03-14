@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WareHouseNew.App", "WareHou
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WareHouseNew.Domain", "WareHouseNew.Domain\WareHouseNew.Domain.csproj", "{26664D7E-BB12-4487-B666-5B0EEB232398}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WareHouseNewTests", "TestProject2\WareHouseNewTests.csproj", "{D1D387A8-0F19-4FE7-928E-166C9EA354BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WareHouseNew.Tests", "WareHouseNew.Tests\WareHouseNew.Tests.csproj", "{F8FE1D6B-32A1-4BF5-A4AA-54E2DDF047F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{26664D7E-BB12-4487-B666-5B0EEB232398}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26664D7E-BB12-4487-B666-5B0EEB232398}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26664D7E-BB12-4487-B666-5B0EEB232398}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D1D387A8-0F19-4FE7-928E-166C9EA354BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D1D387A8-0F19-4FE7-928E-166C9EA354BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D1D387A8-0F19-4FE7-928E-166C9EA354BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D1D387A8-0F19-4FE7-928E-166C9EA354BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8FE1D6B-32A1-4BF5-A4AA-54E2DDF047F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8FE1D6B-32A1-4BF5-A4AA-54E2DDF047F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8FE1D6B-32A1-4BF5-A4AA-54E2DDF047F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8FE1D6B-32A1-4BF5-A4AA-54E2DDF047F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
