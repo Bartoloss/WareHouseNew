@@ -11,41 +11,21 @@ namespace WareHouseNew.App.Concrete
 {
     public class ItemService : BaseService<Item>
     {
-        public Item? GetItemById(int userChoiceIdOfProduct) //pytajnik daje się, żeby można było zwrócić nulla, tam gdzie zadeklarowano że będzie zwrócony obiekt
+        public Item? GetItemById(int userChoiceIdOfProduct)
         {
-            foreach (Item product in ObjList)
-            {
-                if (product.Id == userChoiceIdOfProduct)
-                {
-                    return product;
-                }
-            }
-            return null;
-        }
+            Item? productToShow = ObjList.Where(i => i.Id == userChoiceIdOfProduct).FirstOrDefault();
+            return productToShow;
+        } 
 
         public List<Item>? GetItemsByCategory(int userChoiceCategoryOfProducts)
         {
-            List<Item> productsToShow = new List<Item>();
-            foreach (Item product in ObjList)
-            {
-                if (product.CategoryId == userChoiceCategoryOfProducts)
-                {
-                    productsToShow.Add(product);
-                }
-            }
+            List<Item> productsToShow = ObjList.Where(i => i.CategoryId == userChoiceCategoryOfProducts).ToList();
             return productsToShow;
         }
 
         public List<Item>? GetItemsWithLowStack()
         {
-            List<Item> productsWithLowStack = new List<Item>();
-            foreach (Item product in ObjList)
-            {
-                if(product.ChangeAmount(product.Amount) == false)
-                {
-                    productsWithLowStack.Add(product);
-                }
-            }
+            List<Item> productsWithLowStack = (List<Item>)ObjList.Where(i => i.ChangeAmount(i.Amount) == false).ToList();
             return productsWithLowStack;
         }
     }

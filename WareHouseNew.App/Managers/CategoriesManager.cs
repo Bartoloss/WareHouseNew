@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WareHouseNew.App.Common;
 using WareHouseNew.App.Concrete;
 using WareHouseNew.Domain.Entity;
 
 namespace WareHouseNew.App.Managers
 {
-    public class CategoriesManager
+    public class CategoriesManager : BaseManager<Categories>
     {
         public CategoriesService _categoriesService;
 
@@ -35,10 +36,10 @@ namespace WareHouseNew.App.Managers
             }
             else
             {
-                category.CategoryName = userNameOfAddedCategory;
+                category.Name = userNameOfAddedCategory;
                 categoryId = _categoriesService.AddItem(category);
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"Category {category.CategoryName} with ID={categoryId} was added successfully. ");
+                Console.WriteLine($"Category {category.Name} with ID={categoryId} was added successfully. ");
                 Console.ForegroundColor = ConsoleColor.White;
             }
             
@@ -49,10 +50,7 @@ namespace WareHouseNew.App.Managers
             var allCategories = _categoriesService.GetAllItems();
             if (allCategories.Any())
             {
-                foreach (var category in allCategories)
-                {
-                    Console.WriteLine($"{category.Id}.{category.CategoryName}");
-                }
+                DisplayIdAndNameOfObjects(allCategories);
             }
         }
 
@@ -62,11 +60,7 @@ namespace WareHouseNew.App.Managers
             if (ListofAllCategories.Any())
             {
                 Console.WriteLine("Please select category of products to display:");
-                foreach (var category in ListofAllCategories)
-                {
-                    Console.WriteLine($"{category.Id}.List of {category.CategoryName} products.");
-                }
-                
+                DisplayIdAndNameOfObjects(ListofAllCategories);
             }
         }
     }

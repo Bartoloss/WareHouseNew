@@ -10,7 +10,7 @@ namespace WareHouseNew.Domain.Entity
     public class Item : BaseEntity
     {
         public int CategoryId { get; set; }
-        public string Name { get; set; }
+        
         public int Amount { get; set; }
 
         private bool isLowInWareHouse;

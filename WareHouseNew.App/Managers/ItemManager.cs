@@ -6,13 +6,14 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using WareHouseNew.App.Abstract;
+using WareHouseNew.App.Common;
 using WareHouseNew.App.Concrete;
 using WareHouseNew.App.Helpers;
 using WareHouseNew.Domain.Entity;
 
 namespace WareHouseNew.App.Managers
 {
-    public class ItemManager
+    public class ItemManager : BaseManager<Item>
     {
         public ItemService _itemService;
         public MenuActionService _menuActionService;
@@ -52,17 +53,27 @@ namespace WareHouseNew.App.Managers
                             product.CategoryId = choiceCategory;
                             Console.WriteLine("Please enter name for new product:");
                             string userChoiceNameOfProduct = Console.ReadLine();
-                            product.Name = userChoiceNameOfProduct;
-                            Console.WriteLine("Please enter amount of new product:");
-                            string userChoiceAmountOfProduct = Console.ReadLine();
-                            int amountOfProduct;
-                            Int32.TryParse(userChoiceAmountOfProduct, out amountOfProduct);
-                            product.Amount = amountOfProduct;
-                            product.CreatedDate = DateTime.Now;
-                            int addedProductId = _itemService.AddItem(product);
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine($"Product {product.Name} was added successfully with number of id={addedProductId}.");
-                            Console.ForegroundColor = ConsoleColor.White;
+                            if (string.IsNullOrEmpty(userChoiceNameOfProduct))
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("Failed to add product.");
+                                Console.ForegroundColor = ConsoleColor.White;
+                                AddNewItem();
+                            }
+                            else
+                            {
+                                product.Name = userChoiceNameOfProduct;
+                                Console.WriteLine("Please enter amount of new product:");
+                                string userChoiceAmountOfProduct = Console.ReadLine();
+                                int amountOfProduct;
+                                Int32.TryParse(userChoiceAmountOfProduct, out amountOfProduct);
+                                product.Amount = amountOfProduct;
+                                product.CreatedDate = DateTime.Now;
+                                int addedProductId = _itemService.AddItem(product);
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.WriteLine($"Product {product.Name} was added successfully with number of id={addedProductId}.");
+                                Console.ForegroundColor = ConsoleColor.White;
+                            }
                         }
                         else
                         {
@@ -94,10 +105,7 @@ namespace WareHouseNew.App.Managers
             {
                 Console.WriteLine("Please enter id of product you want to delete:");
                 List<Item> allProducts = _itemService.GetAllItems();
-                foreach (Item product in allProducts)
-                {
-                    Console.WriteLine($"{product.Id}. {product.Name}.");
-                }
+                DisplayIdAndNameOfObjects(allProducts);
                 string userchoiceIdOfProductToRemove = Console.ReadLine();
                 int idOfProductToRemove;
                 if (Int32.TryParse(userchoiceIdOfProductToRemove, out idOfProductToRemove) == true)
@@ -152,25 +160,15 @@ namespace WareHouseNew.App.Managers
                             List<Item> allAddedProducts = _itemService.GetAllItems();
                             if (allAddedProducts.Any())
                             {
-                                foreach (Item product in allAddedProducts)
-                                {
-                                    Console.ForegroundColor = ConsoleColor.Blue;
-                                    Console.WriteLine($"{product.Id}.{product.Name}");
-                                    Console.ForegroundColor = ConsoleColor.White;
-                                }
+                                DisplayIdAndNameOfObjects(allAddedProducts);
                             }
                             break;
                         case 2:
                             List<Item>? productsWithLowStack = _itemService.GetItemsWithLowStack();
-                            if (productsWithLowStack.Any())
+                            if (productsWithLowStack != null)
                             {
-                                Console.ForegroundColor = ConsoleColor.Blue;
                                 Console.WriteLine("List of products with low stack:");
-                                foreach (Item product in productsWithLowStack)
-                                {
-                                    Console.WriteLine($"{product.Id}.{product.Name}");
-                                }
-                                Console.ForegroundColor = ConsoleColor.White;
+                                DisplayIdAndNameOfObjects(productsWithLowStack);
                             }
                             else
                             {
@@ -185,7 +183,7 @@ namespace WareHouseNew.App.Managers
                             int CategoryOfProducts;
                             Int32.TryParse(userChoiceCategoryOfProducts, out CategoryOfProducts);
                             List<Item>? returnedProducts = _itemService.GetItemsByCategory(CategoryOfProducts);
-                            if (returnedProducts.Count == 0) 
+                            if (returnedProducts == null) 
                             {
                                 Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine("There are no products in category you selected.");
@@ -193,12 +191,7 @@ namespace WareHouseNew.App.Managers
                             }
                             else
                             {
-                                foreach (Item product in returnedProducts)
-                                {
-                                    Console.ForegroundColor = ConsoleColor.Blue;
-                                    Console.WriteLine($"{product.Id}. {product.Name}");
-                                    Console.ForegroundColor = ConsoleColor.White;
-                                }
+                                DisplayIdAndNameOfObjects(returnedProducts);
                             }
                             break;
                         default:
@@ -238,7 +231,7 @@ namespace WareHouseNew.App.Managers
                 if (Int32.TryParse(userChoiceCategoryOfProductToDisplay, out CategoryOfProductToDisplay))
                 {
                     List<Item>? productsByCategory = _itemService.GetItemsByCategory(CategoryOfProductToDisplay);
-                    if (productsByCategory.Count == 0)
+                    if (productsByCategory == null)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("There are no products in category you chosen.");
@@ -247,10 +240,7 @@ namespace WareHouseNew.App.Managers
                     else
                     {
                         Console.WriteLine("Please select ID of the product whose details you want to see: ");
-                        foreach (Item product in productsByCategory)
-                        {
-                            Console.WriteLine($"{product.Id}. {product.Name}.");
-                        }
+                        DisplayIdAndNameOfObjects(productsByCategory);
                         string userChoiceIdOfProductToDisplay = Console.ReadLine();
                         int IdOfProductToDisplay;
                         if (Int32.TryParse(userChoiceIdOfProductToDisplay, out IdOfProductToDisplay))
@@ -261,9 +251,8 @@ namespace WareHouseNew.App.Managers
                                 Console.ForegroundColor = ConsoleColor.Blue;
                                 Console.WriteLine($"Product details with ID={productToDisplay.Id}:");
                                 Console.WriteLine($"Name: {productToDisplay.Name}");
-                                Categories returnCategory = _categoriesService.GetCategoryById(productToDisplay.CategoryId);
-
-                                Console.WriteLine($"Category: {returnCategory.CategoryName}");
+                                Categories? returnCategory = _categoriesService.GetCategoryById(productToDisplay.CategoryId);
+                                Console.WriteLine($"Category: {returnCategory?.Name}");
                                 Console.WriteLine($"Amount: {productToDisplay.Amount} pcs");
                                 Console.WriteLine($"Large stock: {productToDisplay.ChangeAmount(productToDisplay.Amount)}");
                                 Console.WriteLine($"Created Date: {productToDisplay.CreatedDate}");

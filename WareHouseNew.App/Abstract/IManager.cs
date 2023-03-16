@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WareHouseNew.Domain.Common;
 
-namespace WareHouseNew.Domain.Entity
+namespace WareHouseNew.App.Abstract
 {
-    public class Categories : BaseEntity
+    public interface IManager<T>
     {
-       
+        void DisplayIdAndNameOfObjects(List<T> listOfObjects);
     }
 }

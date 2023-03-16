@@ -13,24 +13,13 @@ namespace WareHouseNew.App.Concrete
     {
         public Categories? GetCategoryById(int userChoiceIdOfCategory) 
         {
-            foreach (Categories category in ObjList)
-            {
-                if (category.Id == userChoiceIdOfCategory)
-                {
-                    return category;
-                }
-            }
-            return null;
+            Categories? categoryToShow = ObjList.Where(i => i.Id == userChoiceIdOfCategory).FirstOrDefault();
+            return categoryToShow;
         }
-       
 
         public int GetNumberOfAllCategories ()
         {
-            int numberOfAllCategories = 0;
-            foreach (Categories category in ObjList)
-            {
-                numberOfAllCategories++;
-            }
+            int numberOfAllCategories = ObjList.Count;
             return numberOfAllCategories;
         }
     }
