@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WareHouseNew.App.Common;
 using WareHouseNew.App.Concrete;
+using WareHouseNew.App.Helpers;
 using WareHouseNew.Domain.Entity;
 
 namespace WareHouseNew.App.Managers
@@ -17,6 +19,50 @@ namespace WareHouseNew.App.Managers
         {
             _categoriesService = categoriesService;
         }
+
+        public void LoadProgressOfCategory()
+        {
+            if (File.Exists(@"C:\Temp\categories.txt"))
+            {
+                string loadedCategoriesString = File.ReadAllText(@"C:\Temp\categories.txt");
+                List<Categories>? loadedCategories = JsonConvert.DeserializeObject<List<Categories>>(loadedCategoriesString);
+                if (loadedCategories != null)
+                {
+                    foreach (Categories category in loadedCategories)
+                    {
+                        _categoriesService.AddItem(category);
+                    }
+                }
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Categories from 'categories.txt' file was added successfully.");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+        }
+
+        public bool SaveProgressOfCategory()
+        {
+            List<Categories> categoriesToSave = _categoriesService.GetAllItems();
+            if (categoriesToSave.Count > 0)
+            {
+                if (File.Exists(@"C:\Temp\categories.txt"))
+                {
+
+                }
+                else
+                {
+                    File.Create(@"C:\Temp\categories.txt").Close();
+                }
+                string output = JsonConvert.SerializeObject(categoriesToSave); //zapisanie utworzonych produktów przez program do typu string
+                using StreamWriter sw2 = new StreamWriter(@"C:\Temp\categories.txt");
+                using JsonWriter writer2 = new JsonTextWriter(sw2); //potok do zapisywania Jsona
+
+                JsonSerializer serializer = new JsonSerializer(); //utworzenie oddzielnego obiektu serializera
+                serializer.Serialize(writer2, categoriesToSave); //przekazanie potoku do zapisywania Jsona oraz listy elementów
+                return true;
+            }
+            return false;
+        }
+
 
         public void AddCategory()
         {
@@ -37,6 +83,7 @@ namespace WareHouseNew.App.Managers
             else
             {
                 category.Name = userNameOfAddedCategory;
+                category.CreatedById = User.ID;
                 categoryId = _categoriesService.AddItem(category);
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"Category {category.Name} with ID={categoryId} was added successfully. ");

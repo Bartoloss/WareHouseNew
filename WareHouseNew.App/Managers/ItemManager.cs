@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using WareHouseNew.App.Abstract;
 using WareHouseNew.App.Common;
@@ -22,11 +24,55 @@ namespace WareHouseNew.App.Managers
 
         public ItemManager(ItemService itemService, MenuActionService menuActionService, CategoriesService categoriesService, CategoriesManager categoriesManager)
         {
-            _itemService = itemService; //wstrzyknięcie do managera trzech serwisów: menuActionService, ItemService oraz CategoriesService
+            _itemService = itemService;
             _menuActionService = menuActionService;
             _categoriesService = categoriesService;
             _categoriesManager = categoriesManager;
         }
+        
+        public void LoadProgressOfItem()
+        {
+            if (File.Exists(@"C:\Temp\products.txt"))
+            {
+                string loadedProductsString = File.ReadAllText(@"C:\Temp\products.txt");
+                List<Item>? loadedProducts = JsonConvert.DeserializeObject<List<Item>>(loadedProductsString);
+                if (loadedProducts != null)
+                {
+                    foreach (Item product in loadedProducts)
+                    {
+                        _itemService.AddItem(product);
+                    }
+                }
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Products from 'products.txt' file was added successfully.");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+        }
+
+        public bool SaveProgressOfItem()
+        {
+            List<Item> productsToSave = _itemService.GetAllItems();
+            if (productsToSave.Count > 0)
+            {
+                if (File.Exists(@"C:\Temp\products.txt"))
+                {
+
+                }
+                else
+                {
+                    File.Create(@"C:\Temp\products.txt").Close();
+                }
+                string output = JsonConvert.SerializeObject(productsToSave); //zapisanie utworzonych produktów przez program do typu string
+                using StreamWriter sw1 = new StreamWriter(@"C:\Temp\products.txt"); 
+                using JsonWriter writer1 = new JsonTextWriter(sw1); //potok do zapisywania Jsona
+
+                JsonSerializer serializer = new JsonSerializer(); //utworzenie oddzielnego obiektu serializera
+                serializer.Serialize(writer1, productsToSave); //przekazanie potoku do zapisywania Jsona oraz listy elementów
+                return true;
+            }
+            return false;
+        }
+
 
         public void AddNewItem()
         {
@@ -69,6 +115,7 @@ namespace WareHouseNew.App.Managers
                                 Int32.TryParse(userChoiceAmountOfProduct, out amountOfProduct);
                                 product.Amount = amountOfProduct;
                                 product.CreatedDate = DateTime.Now;
+                                product.CreatedById = User.ID;
                                 int addedProductId = _itemService.AddItem(product);
                                 Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine($"Product {product.Name} was added successfully with number of id={addedProductId}.");

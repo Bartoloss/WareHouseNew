@@ -17,6 +17,9 @@ namespace WareHouseNew
             CategoriesManager categoriesManager = new CategoriesManager(categoriesService);
             ItemManager itemManager = new ItemManager(itemService, menuActionService, categoriesService, categoriesManager); //utworzenie nowego obiektu klasy "ItemManager"
 
+            itemManager.LoadProgressOfItem();
+            categoriesManager.LoadProgressOfCategory();
+
             string userChoiceIdOfUser;
             int idOfUser;
             do
@@ -66,6 +69,34 @@ namespace WareHouseNew
                             {
                                 categoriesManager.AddCategory();
                             }
+                        }
+                        break;
+                    case "6":
+                        bool itemsResult = itemManager.SaveProgressOfItem();
+                        bool categoriesResult = categoriesManager.SaveProgressOfCategory();
+                        if (itemsResult && categoriesResult == true)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("Progress of items and categories was saved succesfully.");
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                        else if (itemsResult == true)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("Progress of items was saved succesfully.");
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                        else if (categoriesResult == true)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("Progress of categories was saved succesfully.");
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("Sorry. Progress could not be saved. Please add category or product.");
+                            Console.ForegroundColor = ConsoleColor.White;
                         }
                         break;
                     default:
