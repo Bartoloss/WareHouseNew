@@ -11,16 +11,16 @@ namespace WareHouseNew.App.Concrete
 {
     public class CategoriesService : BaseService<Categories>
     {
-        public Categories? GetCategoryById(int userChoiceIdOfCategory) 
+        public Categories? GetCategoryById(int categoryId) 
         {
-            Categories? categoryToShow = ObjList.Where(i => i.Id == userChoiceIdOfCategory).FirstOrDefault();
-            return categoryToShow;
+            Categories? category = ObjList.Where(i => i.Id == categoryId).FirstOrDefault();
+            return category;
         }
 
         public int GetNumberOfAllCategories ()
         {
-            int numberOfAllCategories = ObjList.Count;
-            return numberOfAllCategories;
+            int number = ObjList.Count;
+            return number;
         }
     }
 }

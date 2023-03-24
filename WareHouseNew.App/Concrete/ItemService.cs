@@ -11,22 +11,22 @@ namespace WareHouseNew.App.Concrete
 {
     public class ItemService : BaseService<Item>
     {
-        public Item? GetItemById(int userChoiceIdOfProduct)
+        public Item? GetItemById(int productId)
         {
-            Item? productToShow = ObjList.Where(i => i.Id == userChoiceIdOfProduct).FirstOrDefault();
-            return productToShow;
+            Item? product = ObjList.Where(i => i.Id == productId).FirstOrDefault();
+            return product;
         } 
 
-        public List<Item>? GetItemsByCategory(int userChoiceCategoryOfProducts)
+        public List<Item>? GetItemsByCategory(int category)
         {
-            List<Item> productsToShow = ObjList.Where(i => i.CategoryId == userChoiceCategoryOfProducts).ToList();
-            return productsToShow;
+            List<Item> products = ObjList.Where(i => i.CategoryId == category).ToList();
+            return products;
         }
 
         public List<Item>? GetItemsWithLowStack()
         {
-            List<Item> productsWithLowStack = (List<Item>)ObjList.Where(i => i.ChangeAmount(i.Amount) == false).ToList();
-            return productsWithLowStack;
+            List<Item> products = (List<Item>)ObjList.Where(i => i.ChangeAmount(i.Amount) == false).ToList();
+            return products;
         }
     }
 }

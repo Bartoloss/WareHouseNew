@@ -10,38 +10,38 @@ namespace WareHouseNew
     {
         private static void Main(string[] args)
         {
-            Dictionary<string, string> localizationOfObjects = new Dictionary<string, string>();
-            localizationOfObjects.Add("localizationOfProducts", @"C:\Temp\products.txt");
-            localizationOfObjects.Add("localizationOfCategories", @"C:\Temp\categories.txt");
+            Dictionary<string, string> pathOfObjects = new Dictionary<string, string>();
+            pathOfObjects.Add("pathOfProducts", @"C:\Temp\products.txt");
+            pathOfObjects.Add("pathOfCategories", @"C:\Temp\categories.txt");
 
             Console.WriteLine("Welcome to warehouse app!");
             MenuActionService menuActionService = new MenuActionService(); //stworzenie nowego obiektu "menuActionService" serwisu
             ItemService itemService = new ItemService();
             CategoriesService categoriesService = new CategoriesService();
-            CategoriesManager categoriesManager = new CategoriesManager(categoriesService, localizationOfObjects);
-            ItemManager itemManager = new ItemManager(itemService, menuActionService, categoriesService, categoriesManager, localizationOfObjects); //utworzenie nowego obiektu klasy "ItemManager"
+            CategoriesManager categoriesManager = new CategoriesManager(categoriesService, pathOfObjects);
+            ItemManager itemManager = new ItemManager(itemService, menuActionService, categoriesService, categoriesManager, pathOfObjects); //utworzenie nowego obiektu klasy "ItemManager"
 
             itemManager.LoadProgressOfItem();
             categoriesManager.LoadProgressOfCategory();
 
-            string userChoiceIdOfUser;
-            int idOfUser;
+            string userIdString;
+            int userId;
             do
             {
                 Console.WriteLine("Please enter your ID user:");
-                userChoiceIdOfUser = Console.ReadLine();
+                userIdString = Console.ReadLine();
             }
-            while (Int32.TryParse(userChoiceIdOfUser, out idOfUser) == false);
-            Console.WriteLine("Thank you! Hello user of ID=" + idOfUser);
-            User.ID = idOfUser;
+            while (!Int32.TryParse(userIdString, out userId));
+            Console.WriteLine("Thank you! Hello user of ID=" + userId);
+            User.ID = userId;
 
             while (true)
             {
                 Console.WriteLine("Please let me know what you want to do:");
-                var mainMenu = menuActionService.GetMenuActionsByMenuName("MainMenu"); //do zmiennej "mainMenu" przypisuje opcje menu z kategorii "Main"
-                for(int i = 0; i < mainMenu.Count; i++) //dla wszystkich znalezionych opcji z kategorii main
+                var mainMenu = menuActionService.GetMenuActionsByMenuName("MainMenu"); 
+                for(int i = 0; i < mainMenu.Count; i++) 
                 {
-                    Console.WriteLine($"{mainMenu[i].Id}. {mainMenu[i].Name}"); //wyświetl na ekranie Id oraz Name tej opcji.
+                    Console.WriteLine($"{mainMenu[i].Id}. {mainMenu[i].Name}"); 
                 }
 
                 string operation = Console.ReadLine();
@@ -60,16 +60,16 @@ namespace WareHouseNew
                         itemManager.ShowDetails();
                         break;
                     case "5":
-                        string userChoiceAmountOfCategoriesToAdd;
-                        int amountOfCategoriesToAdd;
+                        string quantityOfCategoriesString;
+                        int quantityOfCategories;
                         do
                         {
                             Console.WriteLine("How many categories do you want to enter?:");
-                            userChoiceAmountOfCategoriesToAdd = Console.ReadLine();
+                            quantityOfCategoriesString = Console.ReadLine();
                         }
-                        while ((Int32.TryParse(userChoiceAmountOfCategoriesToAdd, out amountOfCategoriesToAdd)) == false);
+                        while (!Int32.TryParse(quantityOfCategoriesString, out quantityOfCategories));
                         {
-                            for (int i = 1; i <= amountOfCategoriesToAdd; i++)
+                            for (int i = 1; i <= quantityOfCategories; i++)
                             {
                                 categoriesManager.AddCategory();
                             }
