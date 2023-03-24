@@ -10,12 +10,16 @@ namespace WareHouseNew
     {
         private static void Main(string[] args)
         {
+            Dictionary<string, string> localizationOfObjects = new Dictionary<string, string>();
+            localizationOfObjects.Add("localizationOfProducts", @"C:\Temp\products.txt");
+            localizationOfObjects.Add("localizationOfCategories", @"C:\Temp\categories.txt");
+
             Console.WriteLine("Welcome to warehouse app!");
             MenuActionService menuActionService = new MenuActionService(); //stworzenie nowego obiektu "menuActionService" serwisu
             ItemService itemService = new ItemService();
             CategoriesService categoriesService = new CategoriesService();
-            CategoriesManager categoriesManager = new CategoriesManager(categoriesService);
-            ItemManager itemManager = new ItemManager(itemService, menuActionService, categoriesService, categoriesManager); //utworzenie nowego obiektu klasy "ItemManager"
+            CategoriesManager categoriesManager = new CategoriesManager(categoriesService, localizationOfObjects);
+            ItemManager itemManager = new ItemManager(itemService, menuActionService, categoriesService, categoriesManager, localizationOfObjects); //utworzenie nowego obiektu klasy "ItemManager"
 
             itemManager.LoadProgressOfItem();
             categoriesManager.LoadProgressOfCategory();

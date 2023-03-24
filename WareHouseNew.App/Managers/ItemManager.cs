@@ -21,20 +21,24 @@ namespace WareHouseNew.App.Managers
         public MenuActionService _menuActionService;
         public CategoriesService _categoriesService;
         public CategoriesManager _categoriesManager;
+        public Dictionary<string, string> _localizationOfObjects;
 
-        public ItemManager(ItemService itemService, MenuActionService menuActionService, CategoriesService categoriesService, CategoriesManager categoriesManager)
+        public ItemManager(ItemService itemService, MenuActionService menuActionService, CategoriesService categoriesService, CategoriesManager categoriesManager, Dictionary<string, string> localizationOfObjects)
         {
             _itemService = itemService;
             _menuActionService = menuActionService;
             _categoriesService = categoriesService;
             _categoriesManager = categoriesManager;
+            _localizationOfObjects = localizationOfObjects;
         }
         
         public void LoadProgressOfItem()
         {
-            if (File.Exists(@"C:\Temp\products.txt"))
+            var path = _localizationOfObjects.Where(i => i.Key == "localizationOfProducts").Select(i => i.Value);
+            string pathString = Convert.ToString(path);
+            if (File.Exists(pathString))
             {
-                string loadedProductsString = File.ReadAllText(@"C:\Temp\products.txt");
+                string loadedProductsString = File.ReadAllText(pathString);
                 List<Item>? loadedProducts = JsonConvert.DeserializeObject<List<Item>>(loadedProductsString);
                 if (loadedProducts != null)
                 {
@@ -51,19 +55,21 @@ namespace WareHouseNew.App.Managers
 
         public bool SaveProgressOfItem()
         {
+            var path = _localizationOfObjects.Where(i => i.Key == "localizationOfProducts").Select(i => i.Value);
+            string pathString = Convert.ToString(path);
             List<Item> productsToSave = _itemService.GetAllItems();
             if (productsToSave.Count > 0)
             {
-                if (File.Exists(@"C:\Temp\products.txt"))
+                if (File.Exists(pathString))
                 {
 
                 }
                 else
                 {
-                    File.Create(@"C:\Temp\products.txt").Close();
+                    File.Create(pathString).Close();
                 }
                 string output = JsonConvert.SerializeObject(productsToSave); //zapisanie utworzonych produktów przez program do typu string
-                using StreamWriter sw1 = new StreamWriter(@"C:\Temp\products.txt"); 
+                using StreamWriter sw1 = new StreamWriter(pathString); 
                 using JsonWriter writer1 = new JsonTextWriter(sw1); //potok do zapisywania Jsona
 
                 JsonSerializer serializer = new JsonSerializer(); //utworzenie oddzielnego obiektu serializera

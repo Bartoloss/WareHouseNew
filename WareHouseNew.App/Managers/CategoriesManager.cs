@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,17 +15,21 @@ namespace WareHouseNew.App.Managers
     public class CategoriesManager : BaseManager<Categories>
     {
         public CategoriesService _categoriesService;
+        public Dictionary<string, string> _localizationOfObjects;
 
-        public CategoriesManager(CategoriesService categoriesService)
+        public CategoriesManager(CategoriesService categoriesService, Dictionary<string, string> localizationOfObjects)
         {
             _categoriesService = categoriesService;
+            _localizationOfObjects = localizationOfObjects;
         }
 
         public void LoadProgressOfCategory()
         {
-            if (File.Exists(@"C:\Temp\categories.txt"))
+            var path = _localizationOfObjects.Where(i => i.Key == "localizationOfCategories").Select(i => i.Value);
+            string pathString = Convert.ToString(path);
+            if (File.Exists(pathString))
             {
-                string loadedCategoriesString = File.ReadAllText(@"C:\Temp\categories.txt");
+                string loadedCategoriesString = File.ReadAllText(pathString);
                 List<Categories>? loadedCategories = JsonConvert.DeserializeObject<List<Categories>>(loadedCategoriesString);
                 if (loadedCategories != null)
                 {
@@ -41,19 +46,21 @@ namespace WareHouseNew.App.Managers
 
         public bool SaveProgressOfCategory()
         {
+            var path = _localizationOfObjects.Where(i => i.Key == "localizationOfCategories").Select(i => i.Value);
+            string pathString = Convert.ToString(path);
             List<Categories> categoriesToSave = _categoriesService.GetAllItems();
             if (categoriesToSave.Count > 0)
             {
-                if (File.Exists(@"C:\Temp\categories.txt"))
+                if (File.Exists(pathString))
                 {
 
                 }
                 else
                 {
-                    File.Create(@"C:\Temp\categories.txt").Close();
+                    File.Create(pathString).Close();
                 }
                 string output = JsonConvert.SerializeObject(categoriesToSave); //zapisanie utworzonych produktów przez program do typu string
-                using StreamWriter sw2 = new StreamWriter(@"C:\Temp\categories.txt");
+                using StreamWriter sw2 = new StreamWriter(pathString);
                 using JsonWriter writer2 = new JsonTextWriter(sw2); //potok do zapisywania Jsona
 
                 JsonSerializer serializer = new JsonSerializer(); //utworzenie oddzielnego obiektu serializera
@@ -91,7 +98,7 @@ namespace WareHouseNew.App.Managers
             }
             
         }
-        
+
         public void ViewAllCategories()
         {
             var allCategories = _categoriesService.GetAllItems();
